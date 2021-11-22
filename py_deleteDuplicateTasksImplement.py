@@ -1,4 +1,10 @@
 # -*- coding:utf-8 -*-
+"""
+const $ = new Env("清除重复任务");
+[Script]
+cron "31 8 * * *" script-path=py_deleteDuplicateTasksImplement.py,tag=清除重复任务
+"""
+
 import json
 import os,sys
 import requests
