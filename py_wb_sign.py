@@ -1,4 +1,7 @@
 # -- coding: utf-8 --
+#[Script]
+#cron "35 8 * * *" script-path=zq_Adv_video.js,tag=微博签到
+
 from logging import fatal
 import os
 from urllib import parse
