@@ -1,3 +1,7 @@
+/*
+[Script]
+cron "0 9 * * *" script-path=js_tieba.js
+*/
 const { MD5 } = require('crypto-js');
 
 const $ = new Env('百度贴吧签到')
