@@ -10,7 +10,7 @@
 5.zq_withdraw务必与zq_cash金额一致，即修改zq_withdraw时也要修改zq_cash
 
 [Script]
-cron "0 10 * * *" script-path=jd_wyw.js,tag=玩一玩成就
+cron "0 10 * * *" script-path=zq_withdraw.js,tag=中青看点提现
 */
 
 const $ = new Env("中青看点提现");
