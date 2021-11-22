@@ -8,6 +8,19 @@
 3.export zq_cash="0.3"或者export zq_cash="30"，不填默认30
 4.多账号用户抓包zq_withdraw时需要与zq_cookie账号顺序一致
 5.zq_withdraw务必与zq_cash金额一致，即修改zq_withdraw时也要修改zq_cash
+
+============Quantumultx===============
+[task_local]
+#玩一玩成就
+0 8 * * * jd_wyw.js, tag=玩一玩成就, img-url=https://raw.githubusercontent.com/tsukasa007/icon/master/jd_wyw.png, enabled=true
+================Loon==============
+[Script]
+cron "0 8 * * *" script-path=jd_wyw.js,tag=玩一玩成就
+===============Surge=================
+玩一玩成就 = type=cron,cronexp="0 8 * * *",wake-system=1,timeout=3600,script-path=jd_wyw.js
+============小火箭=========
+玩一玩成就 = type=cron,script-path=jd_wyw.js, cronexpr="0 8 * * *", timeout=3600, enable=true
+*/
 */
 
 const $ = new Env("中青看点提现");
