@@ -24,6 +24,8 @@ https://kandian.wkandian.com/v5/wechat/withdraw2.json 重写目标 https://raw.g
 3.export zq_cash="0.3"或者export zq_cash="30"，不填默认30
 4.多账号用户抓包zq_withdraw时需要与zq_cookie账号顺序一致
 5.zq_withdraw务必与zq_cash金额一致，即修改zq_withdraw时也要修改zq_cash
+[task_local]
+0 10 * * * https://raw.githubusercontent.com/shylocks/Loon/main/jkd.js, tag=中青自动提现
 */
 
 const $ = new Env("中青看点提现");
