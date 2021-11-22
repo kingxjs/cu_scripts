@@ -12,7 +12,7 @@ TG群:https://t.me/passerbyb2021
 
 [Script]
 cron "10 0 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_plantBeans.js,tag=京东到家鲜豆庄园
-new Env("京东到家鲜豆庄园")
+const $ = new Env("京东到家鲜豆庄园");
 */
 
 const $ = new API("京东到家鲜豆庄园");
