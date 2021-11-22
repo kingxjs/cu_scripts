@@ -14,6 +14,9 @@ shaolin-kongfu
 https://kandian.wkandian.com/v5/CommonReward/toGetReward.json 重写目标 https://raw.githubusercontent.com/shaolin-kongfu/js_scripts/main/zq/zqqd.js
 [MITM]
 hostname = kandian.wkandian.com
+
+[Script]
+cron "0 10 * * *" script-path=zq_qd.js,tag=中青看点签到
 */
 const $ = new Env("中青看点签到");
 const notify = $.isNode() ? require('./sendNotify') : '';
