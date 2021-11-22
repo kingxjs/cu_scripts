@@ -1,5 +1,6 @@
 /*
-京东到家鲜豆任务脚本,支持qx,loon,shadowrocket,surge,nodejs
+京东到家鲜豆任务
+脚本,支持qx,loon,shadowrocket,surge,nodejs
 兼容京东jdCookie.js
 手机设备在boxjs里填写cookie
 boxjs订阅地址:https://gitee.com/passerby-b/javascript/raw/master/JD/passerby-b.boxjs.json
@@ -13,7 +14,7 @@ cron "10 0 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/
 
 */
 
-const $ = new API("jddj_bean");
+const $ = new API("京东到家鲜豆任务");
 let ckPath = './jdCookie.js';//ck路径,环境变量:JDDJ_CKPATH
 let cookies = [];
 let thiscookie = '', deviceid = '';

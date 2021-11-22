@@ -1,4 +1,5 @@
 /*
+京东到家果园任务
 v5.7
 京东到家果园任务脚本,支持qx,loon,shadowrocket,surge,nodejs
 兼容京东jdCookie.js
@@ -16,7 +17,7 @@ cron "10 0,3,8,11,17 * * *" script-path=https://raw.githubusercontent.com/passer
 let isNotify = true;//是否通知,仅限nodejs
 let ckPath = './jdCookie.js';//ck路径,环境变量:JDDJ_CKPATH
 
-const $ = new API("jddj_fruit");
+const $ = new API("京东到家果园任务");
 try {
     //https://ghproxy.com/https://raw.githubusercontent.com/passerby-b/Script/master/jddj_fruit_code.js
     $.http.get({ url: 'https://ghproxy.com/https://raw.githubusercontent.com/passerby-b/Script/master/jddj_fruit_code.js' }).then(response => {

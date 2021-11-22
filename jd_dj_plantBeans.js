@@ -1,4 +1,6 @@
 /*
+京东到家鲜豆庄园
+
 京东到家鲜豆庄园脚本,支持qx,loon,shadowrocket,surge,nodejs
 兼容京东jdCookie.js
 手机设备在boxjs里填写cookie
@@ -13,7 +15,7 @@ cron "10 0 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/
 
 */
 
-const $ = new API("jddj_plantBeans");
+const $ = new API("京东到家鲜豆庄园");
 let ckPath = './jdCookie.js';//ck路径,环境变量:JDDJ_CKPATH
 
 let cookies = [];
