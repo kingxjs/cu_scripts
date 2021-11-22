@@ -13,7 +13,8 @@ https://raw.githubusercontent.com/shaolin-kongfu/js_scripts/main/zq/zq_Adv_video
 定时确保在jcbox脚本运行之前完成即可，一天一次
 
 首次跑完之后需要打开zqbox的重写，在app-任务-每日任务-看福利视频处，领取任务奖励，以后就不用管了
-
+[Script]
+cron "0 10 * * *" script-path=zq_Adv_video.js,tag=中青看点福利视频
  */
 
 const $ = new Env("中青看点福利视频");
