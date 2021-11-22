@@ -11,7 +11,7 @@
 
  const $ = new Env("网易云音乐签到");
  // CrytoJS加密
- const encrypt = require('./wyy_crypto')
+ const encrypt = require('./utils/wyy_crypto')
  const queryString = require('querystring')
  const ntf = $.isNode() ? require('./sendNotify') : '';
  var cookie = ""||$.getdata("Cookie_wyy")|| process.env.Cookie_wyy; // nodejs用户请直接将获取的cookie填写到双引号中
