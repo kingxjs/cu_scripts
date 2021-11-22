@@ -1,3 +1,7 @@
+/*
+[Script]
+cron "0 6,9 * * *" script-path=zq_qd.js,tag=中青看点打卡赚钱
+*/
 const $ = new Env("中青看点打卡赚钱");
 const notify = $.isNode() ? require('./sendNotify') : '';
 message = ""
