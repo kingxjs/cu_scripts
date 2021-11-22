@@ -1,54 +1,9 @@
 /*
 更新时间: 2021-02-24 13:30
-赞赏:中青邀请码`51767260`,农妇山泉 -> 有点咸，万分感谢
-本脚本仅适用于中青看点极速版领取青豆
-食用说明请查看本仓库目录Taskconf/youth/readme.md，其中打卡挑战赛可通过Boxjs开关，报名时间为23点，早起打卡时间为早5点，报名需1000青豆押金，打卡成功可返1000+青豆，打卡失败则押金不予返还，请注意时间运行，
-转发文章获得青豆不实，请无视
-
-============Quantumultx===============
-[rewrite_local]
-# 中青获取body
-https:\/\/ios\.baertt\.com\/v5\/article\/complete.json url script-request-body https://raw.githubusercontent.com/songyangzz/QuantumultX/master/zqgetbody.js
-# 中青看点极速版
-https:\/\/\w+\.youth\.cn\/TaskCenter\/(sign|getSign) url script-request-header https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js
-# 中青看点极速版
-https?:\/\/ios\.baertt\.com\/v5\/article\/complete url script-request-body https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js
-# 中青看点极速版
-https:\/\/ios\.baertt\.com\/v5\/article\/red_packet url script-request-body https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js
-# 中青看点极速版
-https:\/\/ios\.baertt\.com\/v5\/user\/app_stay\.json url script-request-body https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js
-
-主机名：*.youth.cn, ios.baertt.com
-
-[task_local]
-# 中青看点极速版
-0 0/14 5-14 * * * https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, tag=中青看点极速版, img-url=https://raw.githubusercontent.com/Orz-3/task/master/youth.png, enabled=true
-
-# 中青看点极速版自动阅读
-0 0 0-10/1 * * * https://raw.githubusercontent.com/akuticlouds/actions-youth/main/YOUTH_READ.js, tag=中青看点极速版自动阅读, img-url=https://raw.githubusercontent.com/Orz-3/task/master/youth.png, enabled=true
 
 
-Surge 4.0 :
 [Script]
-中青看点 = type=cron,cronexp=35 5 0 * * *,script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js,script-update-interval=0
-中青看点 = type=http-request,pattern=https:\/\/\w+\.youth\.cn\/TaskCenter\/(sign|getSign),script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js
-中青看点 = type=http-request,pattern=https:\/\/ios\.baertt\.com\/v5\/article\/complete,script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, requires-body=true
-中青看点 = type=http-request,pattern=https:\/\/ios\.baertt\.com\/v5\/article\/red_packet,script-pathhttps://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, requires-body=true
-中青看点 = type=http-request,pattern=https:\/\/ios\.baertt\.com\/v5\/user\/app_stay\.json,script-pathhttps://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, requires-body=true
-
-
-Loon 2.1.0+
-[Script]
-# 本地脚本
-cron "04 00 * * *" script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, enabled=true, tag=中青看点
-http-request https:\/\/\w+\.youth\.cn\/TaskCenter\/(sign|getSign) script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js
-http-request https:\/\/ios\.baertt\.com\/v5\/article\/complete script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, requires-body=true
-http-request https:\/\/ios\.baertt\.com\/v5\/article\/red_packet script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, requires-body=true
-http-request https:\/\/ios\.baertt\.com\/v5\/user\/app_stay\.json script-path=https://raw.githubusercontent.com/akuticlouds/actions-youth/main/youth.js, requires-body=true
------------------
-
-[MITM]
-hostname = *.youth.cn, ios.baertt.com 
+cron "0 7 * * *" script-path=zq_Adv_video.js,tag=中青看点
 
 */
 
