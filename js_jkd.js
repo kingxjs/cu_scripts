@@ -250,12 +250,12 @@ async function jkd() {
   await bindTeacher()
   $.isOvertime = false;
   if (!$.isSign) await sign() // 签到
-  if($.isOvertime){
-      $.log(`本次运行完成，共计获得 ${$.profit} 金币`)
-      $.message += `本次运行获得 ${$.profit} 金币\n`
-      $.log(`已超时，明天再运行吧`)
-      $.message += `已超时，明天再运行吧\n`
-      return;
+  if ($.isOvertime) {
+    $.log(`本次运行完成，共计获得 ${$.profit} 金币`)
+    $.message += `本次运行获得 ${$.profit} 金币\n`
+    $.log(`已超时，明天再运行吧`)
+    $.message += `已超时，明天再运行吧\n`
+    return;
   }
   $.log(`去领取阶段奖励`)
   await getStageState() // 阶段奖励
@@ -284,9 +284,9 @@ async function jkd() {
   await getArticleList(53)
   for (let i = 0; i < $.artList.length; ++i) {
     const art = $.artList[i]
-    if($.isOvertime){
-        $.log(`已超时，先跳出`)
-        break
+    if ($.isOvertime) {
+      $.log(`已超时，先跳出`)
+      break
     }
     if (art['art_id']) {
       let artId = art['art_id']
@@ -302,11 +302,11 @@ async function jkd() {
       await call1($.uuid)
       await $.wait(31 * 1000)
       await videoAccount(artId)
-      if($.isOvertime){
-        $.log(`已超时，先跳出`)
-        $.isOvertime = false;
-        break
-      }
+      // if($.isOvertime){
+      //   $.log(`已超时，先跳出`)
+      //   $.isOvertime = false;
+      //   break
+      // }
       await $.wait(5 * 1000)
     }
   }
@@ -318,9 +318,9 @@ async function jkd() {
   await getArticleList()
   for (let i = 0; i < $.artList.length; ++i) {
     const art = $.artList[i]
-    if($.isOvertime){
-        $.log(`已超时，先跳出`)
-        break
+    if ($.isOvertime) {
+      $.log(`已超时，先跳出`)
+      break
     }
     if (art['art_id']) {
       await call2($.uuid)
@@ -335,10 +335,10 @@ async function jkd() {
       await openArticle(artId)
       await $.wait(31 * 1000)
       await readAccount(artId)
-      if($.isOvertime){
-        $.log(`已超时，先跳出`)
-        break
-      }
+      // if($.isOvertime){
+      //   $.log(`已超时，先跳出`)
+      //   break
+      // }
       await $.wait(5 * 1000)
     }
   }
@@ -384,26 +384,26 @@ function userLive(body) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/user/userlive.action",
       `jsondata=${escape(JSON.stringify(postBody))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              console.log('增加阅读时长成功！')
-            } else {
-              $.log(`获取任务列表失败，错误信息：${JSON.stringify(data)}`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                console.log('增加阅读时长成功！')
+              } else {
+                $.log(`获取任务列表失败，错误信息：${JSON.stringify(data)}`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -482,35 +482,35 @@ function getTaskList() {
   return new Promise(resolve => {
     $.post(taskGetUrl("jkd/mobile/base/welfaretask/indexList.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              const taskList = data.data.data.list
-              for (let i = 0; i < taskList.length; ++i) {
-                const task = taskList[i]
-                if (task['tstatus'] === 1) {
-                  $.log(`去做任务【${task['name']}】`)
-                  await doTask(task['pid'], task['name'], "doTask")
-                  await doTask(task['pid'], task['name'], "getMoney")
-                  await $.wait(15 * 1000)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                const taskList = data.data.data.list
+                for (let i = 0; i < taskList.length; ++i) {
+                  const task = taskList[i]
+                  if (task['tstatus'] === 1) {
+                    $.log(`去做任务【${task['name']}】`)
+                    await doTask(task['pid'], task['name'], "doTask")
+                    await doTask(task['pid'], task['name'], "getMoney")
+                    await $.wait(15 * 1000)
+                  }
                 }
+              } else {
+                $.log(`获取任务列表失败，错误信息：${JSON.stringify(data)}`)
               }
-            } else {
-              $.log(`获取任务列表失败，错误信息：${JSON.stringify(data)}`)
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -539,33 +539,33 @@ function doTask(taskId, taskName, action) {
   return new Promise(resolve => {
     $.post(taskPostUrl(`jkd/mobile/base/welfaretask/${action}.action`,
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          //$.log(resp)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              const taskList = data.data.data.list
-              for (let i = 0; i < taskList.length; ++i) {
-                const task = taskList[i]
-                if (task['tstatus'] === 1) {
-                  await doTask()
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            //$.log(resp)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                const taskList = data.data.data.list
+                for (let i = 0; i < taskList.length; ++i) {
+                  const task = taskList[i]
+                  if (task['tstatus'] === 1) {
+                    await doTask()
+                  }
                 }
+              } else {
+                $.log(`获取任务列表失败，错误信息：${JSON.stringify(data)}`)
               }
-            } else {
-              $.log(`获取任务列表失败，错误信息：${JSON.stringify(data)}`)
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -611,29 +611,29 @@ function getUserInfo() {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/newMobileMenu/infoMe.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.userName = data.userinfo.username
-              $.sum = data.userinfo.infoMeSumCashItem.value
-              $.gold = data.userinfo.infoMeGoldItem.title + ": " + data.userinfo.infoMeGoldItem.value
-              $.current = data.userinfo.infoMeCurCashItem.value
-            } else {
-              $.log(`个人信息获取失败，错误信息：${JSON.stringify(data)}`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.userName = data.userinfo.username
+                $.sum = data.userinfo.infoMeSumCashItem.value
+                $.gold = data.userinfo.infoMeGoldItem.title + ": " + data.userinfo.infoMeGoldItem.value
+                $.current = data.userinfo.infoMeCurCashItem.value
+              } else {
+                $.log(`个人信息获取失败，错误信息：${JSON.stringify(data)}`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -656,8 +656,8 @@ function sign() {
               await signShare(data.datas.position)
             } else {
               $.log(`签到失败，错误信息：${JSON.stringify(data)}`)
-              if(data.returnMsg.indexOf('在线时间过长，请重新启动') > -1){
-               
+              if (data.returnMsg.indexOf('在线时间过长，请重新启动') > -1) {
+
                 //   liveBody[$.openId][DATE] = {
                 //       "livetime": 0,
                 //       "articletime": 0,
@@ -739,33 +739,33 @@ function signShare(position) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/account/signShareAccount.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`签到分享成功，获得 ${data.profit} 金币`)
-              $.profit += data.profit
-              if (data.advertPopup && data.advertPopup.advert) {
-                $.log(`去做额外【${data.advertPopup.buttonText}】任务`)
-                await adv(data.advertPopup.position)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`签到分享成功，获得 ${data.profit} 金币`)
+                $.profit += data.profit
+                if (data.advertPopup && data.advertPopup.advert) {
+                  $.log(`去做额外【${data.advertPopup.buttonText}】任务`)
+                  await adv(data.advertPopup.position)
+                }
+              } else if (data['ret'] === 'fail') {
+                $.log(`签到失败，错误信息：${data.rtn_msg}`)
+              } else {
+                $.log(`未知错误：${JSON.stringify(data)}`)
               }
-            } else if (data['ret'] === 'fail') {
-              $.log(`签到失败，错误信息：${data.rtn_msg}`)
-            } else {
-              $.log(`未知错误：${JSON.stringify(data)}`)
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -786,31 +786,31 @@ function adv(position) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/newmobile/stimulateAdv.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`点击视频成功，预计获得 ${data.rewardAmount ? data.rewardAmount : 0} 金币，等待 30 秒`)
-              await $.wait(31 * 1000)
-              body['time'] = `${new Date().getTime()}`
-              await rewardAdv(body)
-            } else if (data['ret'] === 'fail') {
-              $.log(`点击视频失败，错误信息：${data.rtn_msg}`)
-            } else {
-              $.log(`未知错误：${JSON.stringify(data)}`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`点击视频成功，预计获得 ${data.rewardAmount ? data.rewardAmount : 0} 金币，等待 30 秒`)
+                await $.wait(31 * 1000)
+                body['time'] = `${new Date().getTime()}`
+                await rewardAdv(body)
+              } else if (data['ret'] === 'fail') {
+                $.log(`点击视频失败，错误信息：${data.rtn_msg}`)
+              } else {
+                $.log(`未知错误：${JSON.stringify(data)}`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -818,29 +818,29 @@ function rewardAdv(body) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/account/stimulateAdvAccount.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`观看视频成功，获得 ${data.profit} 金币`)
-              $.profit += data.profit
-            } else if (data['ret'] === 'fail') {
-              $.log(`观看视频失败，错误信息：${data.rtn_msg}`)
-            } else {
-              $.log(`未知错误：${JSON.stringify(data)}`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`观看视频成功，获得 ${data.profit} 金币`)
+                $.profit += data.profit
+              } else if (data['ret'] === 'fail') {
+                $.log(`观看视频失败，错误信息：${data.rtn_msg}`)
+              } else {
+                $.log(`未知错误：${JSON.stringify(data)}`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -902,33 +902,33 @@ function openTimeBox() {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/account/openTimeBoxAccount.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`宝箱奖励领取成功，获得 ${data.profit} 金币`)
-              $.profit += data.profit
-              if (data.advertPopup && data.advertPopup.position) {
-                $.log(`去做额外【${data.advertPopup.buttonText}】任务`)
-                await adv(data.advertPopup.position)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`宝箱奖励领取成功，获得 ${data.profit} 金币`)
+                $.profit += data.profit
+                if (data.advertPopup && data.advertPopup.position) {
+                  $.log(`去做额外【${data.advertPopup.buttonText}】任务`)
+                  await adv(data.advertPopup.position)
+                }
+              } else if (data['ret'] === 'fail') {
+                $.log(`签到失败，错误信息：${data.rtn_msg}`)
+              } else {
+                $.log(`未知错误：${JSON.stringify(data)}`)
               }
-            } else if (data['ret'] === 'fail') {
-              $.log(`签到失败，错误信息：${data.rtn_msg}`)
-            } else {
-              $.log(`未知错误：${JSON.stringify(data)}`)
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -947,24 +947,24 @@ function getArticle(artId) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/newmobile/articleDetail.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`articleDetail 记录成功`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`articleDetail 记录成功`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -987,24 +987,24 @@ function getVideo(artId) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/newmobile/artDetail.action",
       `jsondata=${escape(JSON.stringify(body))}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`artDetail 记录成功`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`artDetail 记录成功`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -1012,29 +1012,29 @@ function getStageReward(stage) {
   return new Promise(resolve => {
     $.post(taskPostUrl("jkd/weixin20/newactivity/getStageReward.action",
       `stage=${stage}`), async (err, resp, data) => {
-      try {
-        if (err) {
-          $.log(`${JSON.stringify(err)}`)
-          $.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if (data['ret'] === 'ok') {
-              $.log(`阶段奖励${stage}获取成功，获得 ${data.profit} 金币`)
-              $.profit += data.profit
-            } else if (data['ret'] === 'fail') {
-              $.log(`阶段奖励获取失败，错误信息：${data.rtn_msg}`)
-            } else {
-              $.log(`未知错误：${JSON.stringify(data)}`)
+        try {
+          if (err) {
+            $.log(`${JSON.stringify(err)}`)
+            $.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if (data['ret'] === 'ok') {
+                $.log(`阶段奖励${stage}获取成功，获得 ${data.profit} 金币`)
+                $.profit += data.profit
+              } else if (data['ret'] === 'fail') {
+                $.log(`阶段奖励获取失败，错误信息：${data.rtn_msg}`)
+              } else {
+                $.log(`未知错误：${JSON.stringify(data)}`)
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
-    })
+      })
   })
 }
 
@@ -1301,27 +1301,27 @@ function readAccount(artId, payType = 1) {
                 $.profit += data.profit
               } else if (data['ret'] === 'fail') {
                 $.log(`readAccount文章阅读失败，错误信息：${data.rtn_msg}`)
-				if(data.rtn_msg.indexOf('在线时间过长，请重新启动') > -1){
-                  $.isOvertime = true;
-                    // liveBody[$.openId][DATE] = {
-                    //     "livetime": 0,
-                    //     "articletime": 0,
-                    //     "videotime": 0,
-                    // }
-                    // addLiveTime = 0;
-                    // addArticleTime = 0;
-                    // addVideoTime = 0;
-                    // let body = {
-                    //     'livetime': (liveBody[$.openId][DATE]['livetime']).toString(),
-                    //     'articletime': (liveBody[$.openId][DATE]['articletime']).toString(),
-                    //     'videotime': (liveBody[$.openId][DATE]['videotime']).toString(),
-                    //     'addlivetime': (addLiveTime).toString(),
-                    //     'addarticletime': (addArticleTime).toString(),
-                    //     'addvideotime': (addVideoTime).toString(),
-                    // }
-                    // console.info(JSON.stringify(body))
-                    // await userLive(body)
-				}
+                if (data.rtn_msg.indexOf('在线时间过长，请重新启动') > -1) {
+                  // $.isOvertime = true;
+                  // liveBody[$.openId][DATE] = {
+                  //     "livetime": 0,
+                  //     "articletime": 0,
+                  //     "videotime": 0,
+                  // }
+                  // addLiveTime = 0;
+                  // addArticleTime = 0;
+                  // addVideoTime = 0;
+                  // let body = {
+                  //     'livetime': (liveBody[$.openId][DATE]['livetime']).toString(),
+                  //     'articletime': (liveBody[$.openId][DATE]['articletime']).toString(),
+                  //     'videotime': (liveBody[$.openId][DATE]['videotime']).toString(),
+                  //     'addlivetime': (addLiveTime).toString(),
+                  //     'addarticletime': (addArticleTime).toString(),
+                  //     'addvideotime': (addVideoTime).toString(),
+                  // }
+                  // console.info(JSON.stringify(body))
+                  // await userLive(body)
+                }
               } else {
                 $.log(`未知错误：${JSON.stringify(data)}`)
               }
@@ -1337,7 +1337,7 @@ function readAccount(artId, payType = 1) {
 }
 
 function videoAccount(artId) {
-  let body = 
+  let body =
   {
     "appid": "xzwl",
     "read_weal": 0,
@@ -1354,7 +1354,7 @@ function videoAccount(artId) {
     "artid": artId,
     "accountType": "0",
     "readmodel": "1"
-    }
+  }
   return new Promise(resolve => {
     var options = taskPostUrl("jkd/account/readAccount.action",
       `jsondata=${JSON.stringify(body)}`)
@@ -1372,27 +1372,27 @@ function videoAccount(artId) {
                 $.profit += data.profit
               } else if (data['ret'] === 'fail') {
                 $.log(`videoAccount视频阅读失败，错误信息：${data.rtn_msg}`)
-				if(data.rtn_msg.indexOf('在线时间过长，请重新启动') > -1){
-                    $.isOvertime = true;
-                    // liveBody[$.openId][DATE] = {
-                    //     "livetime": 0,
-                    //     "articletime": 0,
-                    //     "videotime": 0,
-                    // }
-                    // addLiveTime = 0;
-                    // addArticleTime = 0;
-                    // addVideoTime = 0;
-                    // let body = {
-                    //     'livetime': (liveBody[$.openId][DATE]['livetime']).toString(),
-                    //     'articletime': (liveBody[$.openId][DATE]['articletime']).toString(),
-                    //     'videotime': (liveBody[$.openId][DATE]['videotime']).toString(),
-                    //     'addlivetime': (addLiveTime).toString(),
-                    //     'addarticletime': (addArticleTime).toString(),
-                    //     'addvideotime': (addVideoTime).toString(),
-                    // }
-                    // console.info(JSON.stringify(body))
-                    // await userLive(body)
-				}
+                if (data.rtn_msg.indexOf('在线时间过长，请重新启动') > -1) {
+                  // $.isOvertime = true;
+                  // liveBody[$.openId][DATE] = {
+                  //     "livetime": 0,
+                  //     "articletime": 0,
+                  //     "videotime": 0,
+                  // }
+                  // addLiveTime = 0;
+                  // addArticleTime = 0;
+                  // addVideoTime = 0;
+                  // let body = {
+                  //     'livetime': (liveBody[$.openId][DATE]['livetime']).toString(),
+                  //     'articletime': (liveBody[$.openId][DATE]['articletime']).toString(),
+                  //     'videotime': (liveBody[$.openId][DATE]['videotime']).toString(),
+                  //     'addlivetime': (addLiveTime).toString(),
+                  //     'addarticletime': (addArticleTime).toString(),
+                  //     'addvideotime': (addVideoTime).toString(),
+                  // }
+                  // console.info(JSON.stringify(body))
+                  // await userLive(body)
+                }
               } else {
                 $.log(`未知错误：${JSON.stringify(data)}`)
               }
