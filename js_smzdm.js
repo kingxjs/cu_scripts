@@ -81,7 +81,7 @@ $.VAL_cookies = ''
   }
   
   function getAppSign(t) {
-    const sign = 'f=android&sk=1&time=' + t + '&token=' + getToken() + '&v=10.0&weixin=0&key=apr1$AwP!wRRT$gJ/q.X24poeBInlUJC'
+    const sign = 'f=iphone&sk=1&time=' + t + '&token=' + getToken() + '&v=10.0&weixin=1&key=apr1$AwP!wRRT$gJ/q.X24poeBInlUJC'
     return $.CryptoJS.MD5(sign).toString().toUpperCase()
   }
   
@@ -89,7 +89,7 @@ $.VAL_cookies = ''
     const t = new Date().getTime()
     const token = getToken()
     const sign = getAppSign(t)
-    return 'touchstone_event=&v=10.0&sign=' + sign + '&weixin=0&time=' + t + '&sk=1&token=' + token + '&f=android&captcha='
+    return 'touchstone_event=&v=10.0&sign=' + sign + '&weixin=1&time=' + t + '&sk=1&token=' + token + '&f=iphone&captcha='
   }
   
   function showmsg() {
