@@ -97,7 +97,6 @@ $.VAL_cookies = ''
       $.subt = ''
       $.desc = []
 
-      console.info($.web)
       $.subt = $.web.error_code === 0 ? 'PC: 成功' : $.web.error_code === 99 ? 'PC: 未登录' : 'PC: 失败'
       if ($.web.error_code === 0 && $.web.data) {
         $.desc.push(`累计: ${$.web.data.checkin_num}次, 经验: ${$.web.data.exp}, 金币: ${$.web.data.gold}, 积分: ${$.web.data.point}`)
