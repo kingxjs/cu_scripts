@@ -1,6 +1,6 @@
 /*
 [Script]
-cron "10 8 * * *" script-path=js_smzdm_mission.js
+cron "10 8,12,15,20 * * *" script-path=js_smzdm_mission.js
 */
 const smzdmCookieKey = "smzdm_cookie";
 const scriptName = "什么值得买";
