@@ -417,7 +417,7 @@ function WebGetCurrentInfo(smzdmCookie) {
   let subTitle = "";
   let content = "";
   // 获取Cookie
-  let smzdmCookie = magicJS.read(smzdmCookieKey) || process.env.smzdm_cookie || 'session_id=qlulxu0EfxD4f10SWEEI6xb0Lqeqit230XSUVEewgG67qGOk3AHByA%3D%3D.1638275071;deviceid_md5=7d311f412480af53c00a6d6f856b491a;device_s=qlulxu0EfxD4f10SWEEI6xb0Lqeqit230XSUVEewgG7d%2FoWkVTX9RC8A4oyCD%2FzduqTBW3cnnQ%3D;partner_id=0;partner_name=AppStore;device_recfeed_setting=%7B%22homepage_sort_switch%22%3A1%2C%22haojia_recfeed_switch%22%3A1%2C%22other_recfeed_switch%22%3A1%2C%22shequ_recfeed_switch%22%3A1%7D;phone_sort=8X;register_time=1638274940;device_id=qlulxu0EfxD4f10SWEEI6xb0Lqeqit230XSUVEewgG67qGOk3AHByA%3D%3D;f=iphone;device_name=iPhone%20XS;is_new_user=1;active_time=1638274910;v=10.2.5;device_smzdm_version_code=110;device_smzdm_version=10.2.5;device_system_version=14.8;sess=AT-nL6pOZAEk2MDrt3uTg6n%2FxTV3dk3pxX%2FmUh8d7khqV2%2BwcekXP2i5aSpMJpLvXTMDtgaJaPQp0GYNCXVKYOD6mJaS8s7ePb6XEwFub%2Bg5hBve%2B4TusMC790XgQ;login=1;client_id=qlulxu0EfxD4f10SWEEI6xb0Lqeqit230XSUVEewgG67qGOk3AHByA%3D%3D.1638274909238;device_idfa=qlulxu0EfxD4f10SWEEI6xb0Lqeqit230XSUVEewgG67qGOk3AHByA%3D%3D;osversion=18H17;idfa_md5=0;smzdm_id=6033086566;network=1;device_push=notifications_are_disabled;device_type=iPhone11%2C2;ab_test=z4;font_size=normal;device_smzdm=iphone;';
+  let smzdmCookie = magicJS.read(smzdmCookieKey) || process.env.smzdm_cookie || '';
 
   if (!!smzdmCookie === false) {
     magicJS.logWarning("没有读取到什么值得买有效cookie，请访问zhiyou.smzdm.com进行登录");
