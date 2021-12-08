@@ -39,12 +39,17 @@ def sign(params):
     if result.get("status") == 10000:
         sio.write(
             f'连续签到: {result.get("data").get("continuous")}天\n本次收益: {result.get("data").get("desc")}\n')
+        print(
+            f'连续签到: {result.get("data").get("continuous")}天\n本次收益: {result.get("data").get("desc")}\n')
     elif result.get("errno") == 30000:
         sio.write(f"每日签到: 已签到\n")
+        print(f"每日签到: 已签到\n")
     elif result.get("status") == 90005:
         sio.write(f'每日签到: {result.get("msg")}\n')
+        print(f'每日签到: {result.get("msg")}\n')
     else:
         sio.write(f"每日签到: 签到失败\n")
+        print(f"每日签到: 签到失败\n")
 
 
 def card(params):
@@ -58,8 +63,13 @@ def card(params):
             f'用户昵称: {nickname}\n每日打卡: {result.get("data").get("signin").get("title").split("<")[0]}天\n'
             f'积分总计: {result.get("data").get("user").get("energy")}\n'
         )
+        print(
+            f'用户昵称: {nickname}\n每日打卡: {result.get("data").get("signin").get("title").split("<")[0]}天\n'
+            f'积分总计: {result.get("data").get("user").get("energy")}\n'
+        )
     else:
         sio.write(f"每日打卡: 活动过期或失效\n")
+        print(f"每日打卡: 活动过期或失效\n")
 
 
 def pay(params):
@@ -77,10 +87,13 @@ def pay(params):
     result = response.json()
     if result.get("status") == 1:
         sio.write(f'微博钱包: {result.get("score")} 积分\n')
+        print(f'微博钱包: {result.get("score")} 积分\n')
     elif result.get("status") == 2:
         sio.write(f"微博钱包: 已签到\n")
+        print(f"微博钱包: 已签到\n")
     else:
         sio.write(f"微博钱包: Cookie失效\n")
+        print(f"微博钱包: Cookie失效\n")
 
 
 def topicContentList(cookie):
@@ -104,6 +117,7 @@ def topicContentList(cookie):
         result = json.loads(req)
     except:
         sio.write("cookie 已失效")
+        print("cookie 已失效")
         return
     if result.get("ok") == 1:
         list = result["data"]["list"]
@@ -148,7 +162,6 @@ def main():
                 sign(params)
                 pay(params)
             digest = sio.getvalue().strip()
-            print(digest)
             send('微博签到', digest)
     except:
         print("签到失败")
@@ -162,7 +175,6 @@ def main():
             for i in cookie:
                 topicContentList(i)
             digest = sio.getvalue().strip()
-            print(digest)
             send('微博超话签到', digest)
     except:
         print("签到失败")
