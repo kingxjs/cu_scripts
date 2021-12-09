@@ -60,6 +60,8 @@ $.msg = '';
     await yunbei();
     //云贝已完成任务（领取云贝）
     await yunbei_tasks_todo();
+    //云贝账户
+    await yunbei_info();
     //vip任务
     await vipTasks();
     //vip信息
@@ -160,21 +162,24 @@ async function vipTasks() {
                 $.log("VIP任务: " + err);
                 resolve(null);
             }
+            console.info(data)
             data = $.toObj(data);
             if (data.code == 200) {
+                $.growthPoint = 0;
                 for (let index = 0; index < data.data.taskList.length; index++) {
                     const task = data.data.taskList[index];
                     for (let j = 0; j < task.taskItems.length; j++) {
                         const item = task.taskItems[j];
                         if (item.unGetIds && item.unGetIds.length > 0) {
                             await vip_growthpoint_get(item.unGetIds.join(','))
-                            $.msg += `完成 ${task.seqName}：${item.action}，${item.description}\r\n`;
+                            $.growthPoint += item.growthPoint;
+                            // $.msg += `完成 ${task.seqName}：${item.action}，${item.description}\r\n`;
                             $.log(`完成 ${task.seqName}：${item.action}，${item.description}`)
                         }
                     }
                 }
                 resolve(data);
-            }else{
+            } else {
                 $.msg += `vip任务：${data.msg}\r\n`;
                 $.log("vip任务: " + data.msg);
                 resolve(null);
@@ -198,8 +203,8 @@ async function vip_growthpoint() {
             }
             data = $.toObj(data);
             if (data.code == 200) {
-                $.msg += `VIP等级：${data.data.userLevel.level}（${data.data.userLevel.levelName}）,当前成长值：${data.data.userLevel.growthPoint}\r\n`;
-                $.log(`VIP等级：${data.data.userLevel.level}（${data.data.userLevel.levelName}）,当前成长值：${data.data.userLevel.growthPoint}`)
+                $.msg += `VIP等级：${data.data.userLevel.level}（${data.data.userLevel.levelName}）,当前成长值：${data.data.userLevel.growthPoint}，今日增加： ${$.growthPoint}\r\n`;
+                $.log(`VIP等级：${data.data.userLevel.level}（${data.data.userLevel.levelName}）,当前成长值：${data.data.userLevel.growthPoint}，今日增加： ${$.growthPoint}`)
                 resolve(data);
             }else{
                 $.msg += `会员信息：${data.msg}\r\n`;
@@ -246,12 +251,39 @@ async function yunbei() {
                 $.log("云贝信息: " + err);
                 resolve(null);
             }
+            console.info(data)
             data = $.toObj(data);
             if (data.code == 200) {
-                $.msg += `云贝签到：已签到 ${data.data.days}天，明日签到可领取 ${data.data.shells} 云贝\r\n`;
+                // $.msg += `云贝签到：已签到 ${data.data.days}天，明日签到可领取 ${data.data.shells} 云贝\r\n`;
                 $.log(`云贝签到：已签到 ${data.data.days}天，明日签到可领取 ${data.data.shells} 云贝`)
                 resolve(data);
             }else{
+                $.logErr(err);
+                $.log("云贝todo任务: " + err);
+                resolve(null);
+            }
+        })
+    })
+}
+
+async function yunbei_info() {
+    let data = {
+
+    };
+    const opts = getOpts(data, "https://music.163.com/api/v1/user/info");
+    return new Promise(resolve => {
+        $.post(opts, (err, res, data) => {
+            if (err) {
+                $.logErr(err);
+                $.log("云贝信息: " + err);
+                resolve(null);
+            }
+            data = $.toObj(data);
+            if (data.code == 200) {
+                $.msg += `云贝账户：当前 ${data.data.userPoint.balance} 云贝，今日增加：${$.taskPoint} 云贝\r\n`;
+                $.log(`云贝账户：当前 ${data.data.userPoint.balance} 云贝，今日增加：${$.taskPoint} 云贝`)
+                resolve(data);
+            } else {
                 $.logErr(err);
                 $.log("云贝todo任务: " + err);
                 resolve(null);
@@ -291,18 +323,18 @@ async function yunbei_tasks_todo() {
             }
             data = $.toObj(data);
             if (data.code == 200) {
-                var taskPoint = 0;
+                $.taskPoint = 0;
                 for (let index = 0; index < data.data.length; index++) {
                     const item = data.data[index];
                     if (item.completed) {
                         await yunbei_task_finish(item.userTaskId, item.depositCode);
-                        taskPoint+=item.taskPoint;
+                        $.taskPoint+=item.taskPoint;
                         $.log(`云贝任务：${item.taskName} 已完成，领取 ${item.taskPoint}云贝`)
                         await $.wait((1 + Math.random()) * 1000)
                     }
                 }
-                if (taskPoint > 0)
-                    $.msg += `云贝任务：领取 ${taskPoint}云贝\r\n`;
+                // if (taskPoint > 0)
+                //     $.msg += `云贝任务：领取 ${taskPoint}云贝\r\n`;
                 resolve(data);
             }else{
                 $.logErr(err);
