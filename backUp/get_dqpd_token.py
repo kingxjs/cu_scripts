@@ -30,7 +30,7 @@ class MyAdapter(HTTPAdapter):
 
 
 KEYWORD = ""
-cookie = ''
+cookie = 'pt_key=AAJhoKCuADDQMxIdeEcpuX8xmUQvYZHFXlkM_ZZy8Fj8dVYEc6nXYOQ5ES9srIIy8EwN2fxRRl0; pt_pin=king%E5%AD%A6%E4%BD%B3;'
 if "JDCOOKIE" in os.environ and os.environ["JDCOOKIE"]:
     cookie = os.environ["JDCOOKIE"]
 base = 'https://item.jd.com'
@@ -461,7 +461,7 @@ def main():
                         t_list = msg_list
                     # print(t_list)
                     if len(t_list) > 0:
-                        send('店铺签到', 'https://t.me/jd_dp_token\n'+'\n'.join(t_list))
+                        send('店铺签到', 'https://t.me/jd_dp_token\n新增\n'+'\n'.join(t_list))
                 except Exception as ex:
                     print(ex)
 
