@@ -251,7 +251,6 @@ async function yunbei() {
                 $.log("云贝信息: " + err);
                 resolve(null);
             }
-            console.info(data)
             data = $.toObj(data);
             if (data.code == 200) {
                 // $.msg += `云贝签到：已签到 ${data.data.days}天，明日签到可领取 ${data.data.shells} 云贝\r\n`;

@@ -31,7 +31,7 @@ const DATE = `${new Date().getUTCFullYear()}${(new Date().getUTCMonth() + 1).toS
 let liveBody = null, fakeIOS = true
 const $ = new Env("聚看点")
 let sum = 0
-let cookiesArr = [],
+let cookiesArr = ['JSESSIONID=81A3313BB2952A27F908037D42000F45; UM_distinctid=17d59bebc888a9-0e42ce88104148-754c1f51-4a574-17d59bebc89bbf; CNZZDATA1274871401=2133783612-1637884594-https%253A%252F%252Fwww.xiaodouzhuan.cn%252F%7C1637884594; CNZZDATA1275507390=1175281218-1637884594-%7C1637884594; xz_jkd_appkey=f5e9c5f2bdb44af0b42f24afd957bdb7!iOS!5.6.5'],
 cookie = '', message;
 let notify = !$.isNode() ? $.getdata("JKD_MSG") : !!process.env.JKD_NOTIFY
 const ntf = $.isNode() ? require('./sendNotify') : '';
@@ -281,67 +281,67 @@ async function jkd() {
   $.artList = []
   // 看视频
   let stA = new Date().getTime()
-  await getArticleList(53)
-  for (let i = 0; i < $.artList.length; ++i) {
-    const art = $.artList[i]
-    if ($.isOvertime) {
-      $.log(`已超时，先跳出`)
-      break
-    }
-    if (art['art_id']) {
-      let artId = art['art_id']
-      await call2($.uuid)
-      if ($.videocount === 0) {
-        $.log(`观看视屏次数已满，跳出`)
-        break
-      }
-      $.log(`去看视频：${artId}`)
-      await call1($.uuid, artId)
-      await getVideo(artId, true)
-      await video(artId)
-      await call1($.uuid)
-      await $.wait(31 * 1000)
-      await videoAccount(artId)
-      // if($.isOvertime){
-      //   $.log(`已超时，先跳出`)
-      //   $.isOvertime = false;
-      //   break
-      // }
-      await $.wait(5 * 1000)
-    }
-  }
+  // await getArticleList(53)
+  // for (let i = 0; i < $.artList.length; ++i) {
+  //   const art = $.artList[i]
+  //   if ($.isOvertime) {
+  //     $.log(`已超时，先跳出`)
+  //     break
+  //   }
+  //   if (art['art_id']) {
+  //     let artId = art['art_id']
+  //     await call2($.uuid)
+  //     if ($.videocount === 0) {
+  //       $.log(`观看视屏次数已满，跳出`)
+  //       break
+  //     }
+  //     $.log(`去看视频：${artId}`)
+  //     await call1($.uuid, artId)
+  //     await getVideo(artId, true)
+  //     await video(artId)
+  //     await call1($.uuid)
+  //     await $.wait(31 * 1000)
+  //     await videoAccount(artId)
+  //     // if($.isOvertime){
+  //     //   $.log(`已超时，先跳出`)
+  //     //   $.isOvertime = false;
+  //     //   break
+  //     // }
+  //     await $.wait(5 * 1000)
+  //   }
+  // }
   let etA = new Date().getTime()
   let addArticleTime = Math.trunc((etA - stA) / 1000)
   $.artList = []
   // 看文章
   let stV = new Date().getTime()
-  await getArticleList()
-  for (let i = 0; i < $.artList.length; ++i) {
-    const art = $.artList[i]
-    if ($.isOvertime) {
-      $.log(`已超时，先跳出`)
-      break
-    }
-    if (art['art_id']) {
-      await call2($.uuid)
-      if ($.artcount === 0) {
-        $.log(`观看文章次数已满，跳出`)
-        break
-      }
-      let artId = art['art_id']
-      await getArticle(artId)
-      await call1($.uuid, artId)
-      await article(artId)
-      await openArticle(artId)
-      await $.wait(31 * 1000)
-      await readAccount(artId)
-      // if($.isOvertime){
-      //   $.log(`已超时，先跳出`)
-      //   break
-      // }
-      await $.wait(5 * 1000)
-    }
-  }
+  // await getArticleList()
+  // for (let i = 0; i < $.artList.length; ++i) {
+  //   const art = $.artList[i]
+  //   if ($.isOvertime) {
+  //     $.log(`已超时，先跳出`)
+  //     break
+  //   }
+  //   if (art['art_id']) {
+  //     await call2($.uuid)
+  //     if ($.artcount === 0) {
+  //       $.log(`观看文章次数已满，跳出`)
+  //       break
+  //     }
+  //     let artId = art['art_id']
+  //     await getArticle(artId)
+  //     await call1($.uuid, artId)
+  //     await article(artId)
+  //     await openArticle(artId)
+  //     await $.wait(31 * 1000)
+  //     await readAccount(artId)
+  //     // if($.isOvertime){
+  //     //   $.log(`已超时，先跳出`)
+  //     //   break
+  //     // }
+  //     await $.wait(5 * 1000)
+  //   }
+  // }
   let etV = new Date().getTime()
   let addVideoTime = Math.trunc((etV - stV) / 1000)
 

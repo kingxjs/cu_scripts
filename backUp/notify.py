@@ -21,8 +21,8 @@ import re
 # 通知服务
 BARK = ''                                                                 # bark服务,此参数如果以http或者https开头则判定为自建bark服务; secrets可填;
 SCKEY = ''                                                                # Server酱的SCKEY; secrets可填
-TG_BOT_TOKEN = ''                                                         # tg机器人的TG_BOT_TOKEN; secrets可填
-TG_USER_ID = ''                                                           # tg机器人的TG_USER_ID; secrets可填
+TG_BOT_TOKEN = '2110949438:AAHuEh4Ke8FXYxucmxSW6f4hNYBlvLb6IpU'                                                         # tg机器人的TG_BOT_TOKEN; secrets可填
+TG_USER_ID = '-1001740866345'                                                           # tg机器人的TG_USER_ID; secrets可填
 TG_PROXY_IP = '127.0.0.1'                                                          # tg机器人的TG_PROXY_IP; secrets可填
 TG_PROXY_PORT = '1082'                                                        # tg机器人的TG_PROXY_PORT; secrets可填
 DD_BOT_TOKEN = ''                                                         # 钉钉机器人的DD_BOT_TOKEN; secrets可填

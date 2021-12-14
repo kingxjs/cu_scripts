@@ -30,7 +30,7 @@ class MyAdapter(HTTPAdapter):
 
 
 KEYWORD = ""
-cookie = ''
+cookie = 'pt_key=AAJhoKCuADDQMxIdeEcpuX8xmUQvYZHFXlkM_ZZy8Fj8dVYEc6nXYOQ5ES9srIIy8EwN2fxRRl0; pt_pin=king%E5%AD%A6%E4%BD%B3;'
 if "JDCOOKIE" in os.environ and os.environ["JDCOOKIE"]:
     cookie = os.environ["JDCOOKIE"]
 base = 'https://item.jd.com'
@@ -399,7 +399,7 @@ def main():
         checkOldToken()
         parser = argparse.ArgumentParser('')
         parser.add_argument('-c', '--clearable', default=True)
-        parser.add_argument('-k', '--KEYWORD', default='旗舰店 自营 美妆 护肤 电器 手机 母婴 服装 玩具')
+        parser.add_argument('-k', '--KEYWORD', default='首饰 珠宝旗 舰店 自营 美妆 护肤 电器 手机 母婴 服装 玩具 首饰 珠宝')
         parser.add_argument('-jd', '--jingdou', default=True)
         args = parser.parse_args()
         clearable = str2bool(args.clearable)
