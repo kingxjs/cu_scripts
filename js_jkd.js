@@ -31,7 +31,7 @@ const DATE = `${new Date().getUTCFullYear()}${(new Date().getUTCMonth() + 1).toS
 let liveBody = null, fakeIOS = true
 const $ = new Env("聚看点")
 let sum = 0
-let cookiesArr = ['JSESSIONID=81A3313BB2952A27F908037D42000F45; UM_distinctid=17d59bebc888a9-0e42ce88104148-754c1f51-4a574-17d59bebc89bbf; CNZZDATA1274871401=2133783612-1637884594-https%253A%252F%252Fwww.xiaodouzhuan.cn%252F%7C1637884594; CNZZDATA1275507390=1175281218-1637884594-%7C1637884594; xz_jkd_appkey=f5e9c5f2bdb44af0b42f24afd957bdb7!iOS!5.6.5'],
+let cookiesArr = [],
 cookie = '', message;
 let notify = !$.isNode() ? $.getdata("JKD_MSG") : !!process.env.JKD_NOTIFY
 const ntf = $.isNode() ? require('./sendNotify') : '';
