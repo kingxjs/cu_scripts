@@ -278,14 +278,18 @@ async function yunbei_info() {
                 resolve(null);
             }
             data = $.toObj(data);
-            if (data.code == 200) {
-                $.msg += `云贝账户：当前 ${data.data.userPoint.balance} 云贝，今日增加：${$.taskPoint} 云贝\r\n`;
-                $.log(`云贝账户：当前 ${data.data.userPoint.balance} 云贝，今日增加：${$.taskPoint} 云贝`)
-                resolve(data);
-            } else {
-                $.logErr(err);
-                $.log("云贝todo任务: " + err);
-                resolve(null);
+            try {
+                if (data.code == 200) {
+                    $.msg += `云贝账户：当前 ${data.data?.userPoint?.balance} 云贝，今日增加：${$.taskPoint} 云贝\r\n`;
+                    $.log(`云贝账户：当前 ${data.data?.userPoint?.balance} 云贝，今日增加：${$.taskPoint} 云贝`)
+                    resolve(data);
+                } else {
+                    $.logErr(err);
+                    $.log("云贝todo任务: " + err);
+                    resolve(null);
+                }
+            } catch {
+
             }
         })
     })
