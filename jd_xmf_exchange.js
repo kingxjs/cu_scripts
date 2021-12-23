@@ -3,7 +3,8 @@
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 by:小手冰凉 tg:@chianPLA
-MF_EX_1 为 true则兑换1魔方,否则只兑换5魔方
+MF_EX_1 为 true则兑换1魔方,否则只兑换3魔方
+MF_EX_3_CJ 为 true则进行3魔方抽奖
 ============Quantumultx===============
 [task_local]
 #京东小魔方--收集兑换
