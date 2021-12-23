@@ -17,7 +17,7 @@ cron "0 0 * * *" script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main
 ============小火箭=========
 5魔方兑换 = type=cron,script-path=https://raw.githubusercontent.com/he1pu/JDHelp/main/jd_xmf_exchange.js, cronexpr="0 0 * * *", timeout=3600, enable=true
 */
-const $ = new Env('5魔方兑换');
+const $ = new Env('3魔方兑换');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -139,7 +139,7 @@ function taskUrl(function_id, body = {}) {
 function jdUrl(function_id, body={}) {
     return {
         url: `https://api.m.jd.com/client.action?functionId=${function_id}`,
-        body: 'functionId=doInteractiveAssignment&body=%7B%22encryptProjectId%22%3A%223pp3mvzmgcFm7mvU3S1wZihNKi1H%22%2C%22encryptAssignmentId%22%3A%223Qia2BF8oxZWEFsNdAEAuZsTXHqA%22%2C%22sourceCode%22%3A%22acexinpin0823%22%2C%22itemId%22%3A%22%22%2C%22actionType%22%3A%22%22%2C%22completionFlag%22%3A%22%22%2C%22ext%22%3A%7B%22exchangeNum%22%3A1%7D%7D&client=wh5&clientVersion=1.0.0&appid=content_ecology',
+        body: 'functionId=doInteractiveAssignment&body=%7B%22encryptProjectId%22%3A%223pp3mvzmgcFm7mvU3S1wZihNKi1H%22%2C%22encryptAssignmentId%22%3A%22JkfeMeE5JGmkXiTeJZGzcAWv5cr%22%2C%22sourceCode%22%3A%22acexinpin0823%22%2C%22itemId%22%3A%22%22%2C%22actionType%22%3A%22%22%2C%22completionFlag%22%3A%22%22%2C%22ext%22%3A%7B%22exchangeNum%22%3A1%7D%2C%22extParam%22%3A%7B%7D%7D&client=wh5&clientVersion=1.0.0&appid=content_ecology',
         headers: {
             'Accept-Encoding': 'gzip, deflate, br',
             'Connection': 'keep-alive',
