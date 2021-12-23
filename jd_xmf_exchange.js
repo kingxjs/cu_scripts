@@ -33,7 +33,7 @@ if ($.isNode()) {
 const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=doInteractiveAssignment`;
 !(async () => {
     if (!cookiesArr[0]) {
-        $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
+        $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', { "open-url": "https://bean.m.jd.com/" });
         return;
     }
     console.log('！先手动打开一下活动：京东APP，底部“新品”，右侧悬浮窗')
@@ -42,25 +42,22 @@ const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=doInteractive
     for (let i = 0; i < cookiesArr.length; i++) {
         cookie = cookiesArr[i];
         if (cookie) {
-            
+
             $.index = i + 1;
-            await  QueryJDUserInfo();
-            if (i+1) console.log(`\n***************开始京东账号${i + 1}【${$.nickName}】***************`)
+            await QueryJDUserInfo();
+            if (i + 1) console.log(`\n***************开始京东账号${i + 1}【${$.nickName}】***************`)
             //initial();
             if (!$.isLogin)  //cookie不可用
             {
                 //$.setdata('', `CookieJD${i ? i + 1 : "" }`);//cookie失效，故清空cookie。
-                $.msg($.name, `【提示】京东账号${i + 1} cookie已过期！请先获取cookie\n直接使用NobyDa的京东签到获取`, 'https://bean.m.jd.com/', {"open-url": "https://bean.m.jd.com/"});
+                $.msg($.name, `【提示】京东账号${i + 1} cookie已过期！请先获取cookie\n直接使用NobyDa的京东签到获取`, 'https://bean.m.jd.com/', { "open-url": "https://bean.m.jd.com/" });
                 continue;
             }
-            else{
-                $.canEx = true;
-                do{
-                    await exchange_redpocket();
-                    // await $.wait(5000)
-                    $.canEx = false;
-                    console.log('每日限兑一次')
-                }while($.canEx);  
+            else {
+
+                await exchange_redpocket();
+                await $.wait(5000)
+
             }
         }
     }
