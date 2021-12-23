@@ -1,5 +1,5 @@
 /*
-京东小魔方--收集兑换
+京东小魔方--兑换
 已支持IOS双京东账号,Node.js支持N个京东账号
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 by:小手冰凉 tg:@chianPLA
@@ -11,7 +11,7 @@ MF_EX_3_CJ 为 true则进行3魔方抽奖
 31 8 * * * jd jd_mofang_ex.js, tag=京东小魔方--收集兑换, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
  */
-const $ = new Env('京东小魔方--收集兑换');
+const $ = new Env('京东小魔方--兑换');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
