@@ -57,7 +57,9 @@ const JD_API_HOST = `https://api.m.jd.com/client.action?functionId=doInteractive
                 $.canEx = true;
                 do{
                     await exchange_redpocket();
-                    await $.wait(5000)
+                    // await $.wait(5000)
+                    $.canEx = false;
+                    console.log('每日限兑一次')
                 }while($.canEx);  
             }
         }
