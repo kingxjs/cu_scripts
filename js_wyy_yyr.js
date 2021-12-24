@@ -162,7 +162,6 @@ async function vipTasks() {
                 $.log("VIP任务: " + err);
                 resolve(null);
             }
-            console.info(data)
             data = $.toObj(data);
             if (data.code == 200) {
                 $.growthPoint = 0;
