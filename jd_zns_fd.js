@@ -1,7 +1,8 @@
 /*
 炸年兽-福袋
 活动入口：主页右下角
-50 0 * * *
+[Script]
+cron "0 3 * * *" script-path=js_smzdm_signin.js
  */
 const $ = new Env('炸年兽-福袋');
 const notify = $.isNode() ? require('./sendNotify') : '';
