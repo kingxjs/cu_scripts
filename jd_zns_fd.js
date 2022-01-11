@@ -67,7 +67,7 @@ $.shopList = [];
     console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
     // console.log(`=============== 开始做福袋任务 ===============\n`)
     // await qryCompositeMaterials();
-    
+
     console.log(`=============== 开始做店铺小程序任务 ===============\n`)
     await get_shop_list();
     await $.wait(9000)
@@ -90,20 +90,24 @@ async function showMsg() {
 
 //获取店铺列表
 function get_shop_list() {
-  if ($.shopList.length > 0) {
-    for (let i = 0; i < $.shopList.length; i++) {
-      const item = $.shopList[i];
-      console.info(`${count}，店铺：${item['shopName']}`)
-      await jm_promotion_queryPromotionInfoByShopId({
-        'shopId': item['shopId'],
-        'venderId': item['venderId']
-      })
-      await $.wait((3 + Math.random()) * 1000)
-      count++;
-    }
-    return;
-  }
+
   return new Promise((resolve) => {
+    if ($.shopList.length > 0) {
+      var count = 1;
+      for (let i = 0; i < $.shopList.length; i++) {
+        const item = $.shopList[i];
+        console.info(`${count}，店铺：${item['shopName']}`)
+        await jm_promotion_queryPromotionInfoByShopId({
+          'shopId': item['shopId'],
+          'venderId': item['venderId']
+        })
+        await $.wait((3 + Math.random()) * 1000)
+        count++;
+      }
+      resolve();
+      return;
+    }
+
     var body = {
       "qryParam": "[{\"type\":\"advertGroup\",\"mapTo\":\"homeMsgs\",\"id\":\"05863713\"},{\"type\":\"advertGroup\",\"mapTo\":\"homeBtnDrawNotFirsts\",\"id\":\"06079449\"},{\"type\":\"advertGroup\",\"id\":\"06079417\",\"mapTo\":\"homePullDowner\"},{\"type\":\"advertGroup\",\"id\":\"06079457\",\"mapTo\":\"homeNaming\"},{\"type\":\"advertGroup\",\"id\":\"05863717\",\"mapTo\":\"homeBtnLink\"},{\"type\":\"advertGroup\",\"id\":\"06079423\",\"mapTo\":\"homePopupPrivateDomain\"},{\"type\":\"advertGroup\",\"id\":\"05863725\",\"mapTo\":\"homeBtnBranch\"},{\"type\":\"advertGroup\",\"id\":\"05863757\",\"mapTo\":\"homeBtnMainDivided\"},{\"type\":\"advertGroup\",\"id\":\"06082301\",\"mapTo\":\"homeBtnTaskKoi\"},{\"type\":\"advertGroup\",\"id\":\"05863748\",\"mapTo\":\"homeBtnTaskUnavailable\"},{\"type\":\"advertGroup\",\"id\":\"06083624\",\"mapTo\":\"homeBtnKoi\"},{\"type\":\"advertGroup\",\"id\":\"06079457\",\"mapTo\":\"homePopupFallingRedbag\"},{\"type\":\"advertGroup\",\"mapTo\":\"babelCountDownFromAdv\",\"id\":\"05884370\"},{\"type\":\"advertGroup\",\"mapTo\":\"taskPanelBanner\",\"id\":\"05863785\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerT\",\"id\":\"06079452\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerS\",\"id\":\"06079411\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerA\",\"id\":\"06079430\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerB\",\"id\":\"05861004\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomHeadPic\",\"id\":\"05872092\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData0\",\"id\":\"06110848\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData1\",\"id\":\"06110849\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData2\",\"id\":\"06110876\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData3\",\"id\":\"06110889\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData4\",\"id\":\"06110899\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData5\",\"id\":\"06110902\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData6\",\"id\":\"06110898\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData7\",\"id\":\"06110893\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData8\",\"id\":\"06110890\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData9\",\"id\":\"06110887\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData10\",\"id\":\"06110872\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData11\",\"id\":\"06110862\"},{\"type\":\"advertGroup\",\"mapTo\":\"fissionData\",\"id\":\"06082228\"},{\"type\":\"advertGroup\",\"mapTo\":\"newProds\",\"id\":\"06079447\"}]",
       "activityId": "41AJZXRUJeTqdBK9bPoPgUJiodcU",
