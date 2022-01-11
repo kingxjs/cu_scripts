@@ -217,7 +217,7 @@ function get_shop_info(shop) {
               var params = JSON.parse(JSON.stringify(shop));
               const task = task_list[i];
               console.info(`开始做任务:${task.name},${task.type}`)
-              if (task.type === 11) {
+              if (task.type === 1) {
                 params['taskId'] = task.id
                 params['token'] = task.token
                 params['opType'] = 2
@@ -391,7 +391,7 @@ function jm_goods_taskGoods(shop_name, type, totalCount, finishCount, params) {
               await $.wait(($.duration + Math.random()) * 1000)
             }
           } else {
-            console.log(data.msg)
+            console.log('jm_goods_taskGoods',data.msg)
           }
         }
       } catch (e) {
