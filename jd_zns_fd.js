@@ -1,7 +1,7 @@
 /*
 炸年兽-福袋
 活动入口：主页右下角
-0 0 0/3 * * *
+50 0 * * *
  */
 const $ = new Env('炸年兽-福袋');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -63,51 +63,19 @@ $.newShareCodes = [];
       continue
     }
     console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-
-    // await get_shop_list();
-    //await travel_getHomeData();
-    //await travel_getSignHomeData();
-    //await travel_collectAtuoScore();
-    //var j = 0;
-    //$.taskBo = true;
-    //do {
-    //  console.log(`=============== 进行第${j + 1}轮任务 ===============`)
-    //  $.taskBo = false;
-    //  await getTaskDetail();
-    //  if ($.taskBo == true) {
-    //    j++;
-    //    await $.wait((10 + Math.random()) * 1000)
-    //  } else {
-    //    console.log('已做完所有任务，请间隔一段时间在运行\n')
-    //    break;
-    //  }
-    //} while ($.taskBo)
-
-    $.taskBo = true;
     console.log(`=============== 开始做福袋任务 ===============\n`)
     await qryCompositeMaterials();
-    // while ($.homeMainInfo.raiseInfo && $.homeMainInfo.raiseInfo.remainScore >= $.homeMainInfo.raiseInfo.cityConfig.clockNeedsCoins) {
-    //   await travel_raise()
-    // }
+
+    await get_shop_list();
+    await $.wait(9000)
+    await get_shop_list();
+
+    // $.taskBo = true;
+    // console.log(`=============== 开始做福袋任务 ===============\n`)
+    // await qryCompositeMaterials();
+
   }
-  // for (let i = 0; (cookiesArr.length < 3 ? i < cookiesArr.length : i < 3) && $.activityId === ''; i++) {
-  //   $.index = i + 1;
-  //   $.cookie = cookiesArr[i];
-  //   $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
-  //   if($.UserName=='king学佳') continue;
-  //   if ($.shareCodes && $.shareCodes.length) {
-  //     console.log(`\n自己账号内部循环互助\n`);
-  //     for (let j = 0; j < $.shareCodes.length; j++) {
-  //       if ($.shareCodes[j] == $.shareCodesArr[$.UserName]) {
-  //         console.log(`\n不能助力自己\n`);
-  //         continue;
-  //       }
-  //       console.log(`账号${$.UserName} 去助力 ${$.shareCodes[j]}`)
-  //       await friendsHelp($.shareCodes[j])
-  //       await $.wait(2000)
-  //     }
-  //   }
-  // }
+
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); });
 
 async function showMsg() {
@@ -120,7 +88,13 @@ async function showMsg() {
 //获取店铺列表
 function get_shop_list() {
   return new Promise((resolve) => {
-    var body = { "qryParam": "[{\"type\":\"advertGroup\",\"mapTo\":\"babelCountDownFromAdv\",\"id\":\"05884370\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerT\",\"id\":\"05860672\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerS\",\"id\":\"05861001\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerA\",\"id\":\"05861003\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerB\",\"id\":\"05861004\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomHeadPic\",\"id\":\"05872092\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData0\",\"id\":\"05908556\"},{\"type\":\"advertGroup\",\"mapTo\":\"fissionData\",\"id\":\"05863777\"},{\"type\":\"advertGroup\",\"mapTo\":\"newProds\",\"id\":\"05864483\"}]", "activityId": "2vVU4E7JLH9gKYfLQ5EVW6eN2P7B", "pageId": "", "reqSrc": "", "applyKey": "jd_star" }
+    var body = {
+      "qryParam": "[{\"type\":\"advertGroup\",\"mapTo\":\"homeMsgs\",\"id\":\"05863713\"},{\"type\":\"advertGroup\",\"mapTo\":\"homeBtnDrawNotFirsts\",\"id\":\"06079449\"},{\"type\":\"advertGroup\",\"id\":\"06079417\",\"mapTo\":\"homePullDowner\"},{\"type\":\"advertGroup\",\"id\":\"06079457\",\"mapTo\":\"homeNaming\"},{\"type\":\"advertGroup\",\"id\":\"05863717\",\"mapTo\":\"homeBtnLink\"},{\"type\":\"advertGroup\",\"id\":\"06079423\",\"mapTo\":\"homePopupPrivateDomain\"},{\"type\":\"advertGroup\",\"id\":\"05863725\",\"mapTo\":\"homeBtnBranch\"},{\"type\":\"advertGroup\",\"id\":\"05863757\",\"mapTo\":\"homeBtnMainDivided\"},{\"type\":\"advertGroup\",\"id\":\"06082301\",\"mapTo\":\"homeBtnTaskKoi\"},{\"type\":\"advertGroup\",\"id\":\"05863748\",\"mapTo\":\"homeBtnTaskUnavailable\"},{\"type\":\"advertGroup\",\"id\":\"06083624\",\"mapTo\":\"homeBtnKoi\"},{\"type\":\"advertGroup\",\"id\":\"06079457\",\"mapTo\":\"homePopupFallingRedbag\"},{\"type\":\"advertGroup\",\"mapTo\":\"babelCountDownFromAdv\",\"id\":\"05884370\"},{\"type\":\"advertGroup\",\"mapTo\":\"taskPanelBanner\",\"id\":\"05863785\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerT\",\"id\":\"06079452\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerS\",\"id\":\"06079411\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerA\",\"id\":\"06079430\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerB\",\"id\":\"05861004\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomHeadPic\",\"id\":\"05872092\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData0\",\"id\":\"06110848\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData1\",\"id\":\"06110849\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData2\",\"id\":\"06110876\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData3\",\"id\":\"06110889\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData4\",\"id\":\"06110899\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData5\",\"id\":\"06110902\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData6\",\"id\":\"06110898\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData7\",\"id\":\"06110893\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData8\",\"id\":\"06110890\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData9\",\"id\":\"06110887\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData10\",\"id\":\"06110872\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData11\",\"id\":\"06110862\"},{\"type\":\"advertGroup\",\"mapTo\":\"fissionData\",\"id\":\"06082228\"},{\"type\":\"advertGroup\",\"mapTo\":\"newProds\",\"id\":\"06079447\"}]",
+      "activityId": "41AJZXRUJeTqdBK9bPoPgUJiodcU",
+      "pageId": "",
+      "reqSrc": "",
+      "applyKey": "jd_star"
+    }
     var options = taskPostUrl('qryCompositeMaterials', body, "qryCompositeMaterials")
     $.post(options, async (err, resp, data) => {
       try {
@@ -130,20 +104,32 @@ function get_shop_list() {
         } else {
           data = JSON.parse(data);
           if (data && data['code'] === '0' || data['code'] === 0) {
-            var item_list = data.data.feedBottomData0.list;
-            $.shop_list = []
 
-            for (let i = 0; i < item_list.length; i++) {
-              const item = item_list[i];
-              $.shop_list.push({
-                'shopId': item['link'],
-                'venderId': item['extension']['shopInfo']['venderId']
-              })
-              await jm_promotion_queryPromotionInfoByShopId({
-                'shopId': item['link'],
-                'venderId': item['extension']['shopInfo']['venderId']
-              })
+            var count = 1;
+            for (let index = 0; index < 12; index++) {
+              var item_list = data.data[`feedBottomData${index}`]['list'];
+              if (item_list) {
+                $.shop_list = []
+
+                for (let i = 0; i < item_list.length; i++) {
+                  const item = item_list[i];
+                  $.shop_list.push({
+                    'shopId': item['link'],
+                    'venderId': item['extension']['shopInfo']['venderId'],
+                    "projectId": 7527
+                  })
+
+                  console.info(`${count}，店铺：${item['extension']['shopInfo']['shopName']}`)
+                  await jm_promotion_queryPromotionInfoByShopId({
+                    'shopId': item['link'],
+                    'venderId': item['extension']['shopInfo']['venderId']
+                  })
+                  await $.wait((3 + Math.random()) * 1000)
+                  count++;
+                }
+              }
             }
+
           } else {
             console.log(data.data.bizMsg)
           }
@@ -167,12 +153,14 @@ function jm_promotion_queryPromotionInfoByShopId(shop) {
         } else {
           data = JSON.parse(data);
           if (data && data.success) {
-            var wxUrl = data.data.wxUrl;
+            var wxUrl = data.data.innerLink;
             wxUrl = transform(wxUrl)
+            wxUrl = JSON.parse(wxUrl.params + '}')
+            shop["projectId"] = wxUrl.param.projectId;
             shop["miniAppId"] = wxUrl.appId;
             await get_shop_info(shop)
           } else {
-            console.log(data.data.bizMsg)
+            console.log(data.msg)
           }
         }
       } catch (e) {
@@ -185,38 +173,39 @@ function jm_promotion_queryPromotionInfoByShopId(shop) {
 }
 function get_shop_info(shop) {
   return new Promise((resolve) => {
-    var options = taskJDZZUrl2(`functionId=jm_marketing_maininfo&body=${escape(JSON.stringify(shop))}&client=wh5&clientVersion=1.0.0&appid=shop_view`)
+    var options = taskJDZZUrl2(`functionId=jm_marketing_maininfo&body=${JSON.stringify(shop)}&client=wh5&clientVersion=10.0.0&appid=shop_view&uuid=256b203b3fc96a096d79d23f890c24d517d324d2&t=${(new Date).getTime()}&eid=eidI374A0112Q0NGMzY5RTItQUNBOC00Nw==4TVThAzwO7B3noqPTjLi8HvRnf5ZIdhigqvCSo4m5l2bJQJbD8a/rf9nqKqKh241mJSaOnR52SCzJYK0`)
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          // console.info(data)
           data = JSON.parse(data);
           if (data && data.success) {
             var task_list = data.data.project.viewTaskVOS;
             var shop_name = data.data.shopInfoVO.shopName;
             console.info(`开始做店铺:《${shop_name}》的任务`)
-            if (shop_name.indexOf('誉佰利家具旗舰店') == -1) { return; }
-            var res1 = await followShop(shop.shopId, shop.miniAppId)
+            await followShop(shop.shopId, shop.miniAppId)
+            await tanmi(shop, shop.miniAppId)
             for (let i = 0; i < task_list.length; i++) {
               var params = JSON.parse(JSON.stringify(shop));
               const task = task_list[i];
               console.info(`开始做任务:${task.name},${task.type}`)
-              // if (task.type === 1) {
-              //   params['taskId'] = task.id
-              //   params['token'] = task.token
-              //   params['opType'] = 2
-              //   params['functionIdFixed'] = 'jm_task_process_play'
-              //   for (let j = 0; j < task.coinCost; j++) {
-              //     var res = await jm_task_process(shop_name, params)
-              //     if (res)
-              //       console.info(`店铺:《${shop_name}》, 抽奖一次, 获得奖励:${JSON.stringify(res.awardVO)}`)
-              //   }
-              // }
-              // else
-              if (task.type === 8) {
+              if (task.type === 1) {
+                params['taskId'] = task.id
+                params['token'] = task.token
+                params['opType'] = 2
+                params['functionIdFixed'] = 'jm_task_process_play'
+                for (let j = 0; j < task.coinCost; j++) {
+                  var res = await jm_task_process(shop_name, params)
+                  if (res)
+                    console.info(`店铺:《${shop_name}》, 抽奖一次, 获得奖励:${JSON.stringify(res.awardVO)}`)
+                  if (!$.duration || $.duration < 9) $.duration = 9;
+                  console.info(`等待${$.duration}秒`)
+                  await $.wait(($.duration + Math.random()) * 1000)
+                }
+              }
+              else if (task.type === 8) {
                 params['taskId'] = task.id
                 params['token'] = task.token
                 params['opType'] = 1
@@ -230,16 +219,21 @@ function get_shop_info(shop) {
               else if (task.type === 3 || task.type === 5) {
                 params['taskId'] = task.id
                 params['token'] = task.token
-                for (let i = task.finishCount, j = 0; i < task.totalCount; ++i, ++j) {
-                  await jm_goods_taskGoods(shop_name, params)
-                  if (!$.duration || $.duration < 9) $.duration = 9;
-                  console.info(`等待${$.duration}秒`)
-                  await $.wait(($.duration + Math.random()) * 1000)
-                }
+                await jm_goods_taskGoods(shop_name, task.type, task.totalCount - task.finishCount, params)
+                if (!$.duration || $.duration < 9) $.duration = 9;
+                console.info(`等待${$.duration}秒`)
+                await $.wait(($.duration + Math.random()) * 1000)
+                // for (let i = task.finishCount, j = 0; i < task.totalCount; ++i, ++j) {
+                //   await jm_goods_taskGoods(shop_name, task.type, params)
+                //   if (!$.duration || $.duration < 9) $.duration = 9;
+                //   console.info(`等待${$.duration}秒`)
+                //   await $.wait(($.duration + Math.random()) * 1000)
+                // }
               }
             }
-          } else {
-            console.log(data.data.bizMsg)
+          }
+          else {
+            console.log(data.msg)
           }
         }
       } catch (e) {
@@ -278,6 +272,34 @@ function followShop(shopId, miniAppId) {
     })
   })
 }
+//潮玩探秘
+function tanmi(shop, miniAppId) {
+  return new Promise((resolve) => {
+    var options = taskPostUrl3('jm_hidden_tryDoTask', shop)
+    options.headers['Origin'] = `https://service.vapp.jd.com/`;
+    options.headers['Referer'] = `https://service.vapp.jd.com/${miniAppId}/1/page-frame.html`;
+    $.post(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          console.info(`潮玩探秘：${data}`)
+          data = JSON.parse(data);
+          if (data && data.success) {
+            resolve(data.data);
+          } else {
+            console.log(data.code)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
 //完成店铺任务
 function jm_task_process(shop_name, params) {
   return new Promise((resolve) => {
@@ -296,6 +318,7 @@ function jm_task_process(shop_name, params) {
           if (data && data.code == 200) {
             resolve(data.data);
           } else {
+            resolve(false);
             console.log(data.msg)
           }
         }
@@ -308,7 +331,7 @@ function jm_task_process(shop_name, params) {
   })
 }
 //加购浏览 店铺商品
-function jm_goods_taskGoods(shop_name, params) {
+function jm_goods_taskGoods(shop_name, type, count, params) {
   return new Promise((resolve) => {
     var options = taskPostUrl3('jm_goods_taskGoods', params)
     options.headers['Origin'] = `https://service.vapp.jd.com`;
@@ -323,12 +346,22 @@ function jm_goods_taskGoods(shop_name, params) {
           data = JSON.parse(data);
           if (data && data.success) {
             sku_list = data.data.skuList;
-            for (let i = 0; i < sku_list.length; i++) {
+            for (let i = 0; i < sku_list.length && i < count; i++) {
               const sku = sku_list[i];
               var p = JSON.parse(JSON.stringify(params));
-              p['opType'] = 2
+
               p['referSource'] = sku['skuId']
+              if (type == 3) {
+                p['opType'] = 1
+                await jm_task_process(shop_name, p)
+              }
+
+              p['opType'] = 2
               var res = await jm_task_process(shop_name, p)
+              if (!res) {
+                resolve();
+                return;
+              }
               console.info(`店铺:《${shop_name}》, 加购《${sku['name']}》, 获得奖励:${res && res.awardVO}`)
               if (!$.duration || $.duration < 9) $.duration = 9;
               console.info(`等待${$.duration}秒`)
@@ -748,6 +781,8 @@ function travel_getFeedDetail(taskId) {
     })
   })
 }
+
+
 //获取活动信息
 function travel_getHomeData() {
   return new Promise((resolve) => {
@@ -1013,7 +1048,7 @@ function taskPostUrl(function_id, body = {}, function_id2) {
       "Host": "api.m.jd.com",
       "Origin": "https://wbbny.m.jd.com",
       "Referer": "https://wbbny.m.jd.com/babelDiy/Zeus/2vVU4E7JLH9gKYfLQ5EVW6eN2P7B/index.html?babelChannel=jdappsyfc&shareType=team&inviteId=E7unasWZBJTSra-Ra-L5tMswsS-SlLJJjLHA&mpin=RnFjwjRbbjbZw9RV_sYmBgLc&from=sc&lng=116.381909&lat=39.971877&sid=848ed40bf83b638d83b87f0732342a2w&un_area=1_2810_55541_0",
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
     },
     timeout: 10000,
   }
@@ -1031,7 +1066,7 @@ function taskPostUrl2(function_id, body = {}, function_id2) {
       "origin": "https://wbbny.m.jd.com",
       "referer": "https://wbbny.m.jd.com/",
       'Content-Type': 'application/x-www-form-urlencoded',
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
     }
   }
 }
@@ -1042,7 +1077,7 @@ function taskPostUrl3(function_id, body = {}, function_id2) {
   }
   return {
     url,
-    body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=10.0.0&uuid=${$.pre_session}&appid=shop_view&t=${(new Date).getTime()}&eid=eidI374A0112Q0NGMzY5RTItQUNBOC00Nw%3D%3D4TVThAzwO7B3noqPTjLi8HvRnf5ZIdhigqvCSo4m5l2bJQJbD8a%2Frf9nqKqKh241mJSaOnR52SCzJYK0`,
+    body: `functionId=${function_id}&body=${escape(JSON.stringify(body))}&client=wh5&clientVersion=10.0.0&uuid=${$.pre_session}&appid=shop_view&t=${(new Date).getTime()}&eid=eidI374A0112Q0NGMzY5RTItQUNBOC00Nw==4TVThAzwO7B3noqPTjLi8HvRnf5ZIdhigqvCSo4m5l2bJQJbD8a/rf9nqKqKh241mJSaOnR52SCzJYK0`,
     headers: {
       "Accept": "*/*",
       "Accept-Encoding": "gzip, deflate, br",
@@ -1053,7 +1088,7 @@ function taskPostUrl3(function_id, body = {}, function_id2) {
       "Host": "api.m.jd.com",
       "Origin": "https://wbbny.m.jd.com",
       "Referer": "https://wbbny.m.jd.com/babelDiy/Zeus/2vVU4E7JLH9gKYfLQ5EVW6eN2P7B/index.html?babelChannel=jdappsyfc&shareType=team&inviteId=E7unasWZBJTSra-Ra-L5tMswsS-SlLJJjLHA&mpin=RnFjwjRbbjbZw9RV_sYmBgLc&from=sc&lng=116.381909&lat=39.971877&sid=848ed40bf83b638d83b87f0732342a2w&un_area=1_2810_55541_0",
-      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
     },
     timeout: 10000,
   }
@@ -1097,7 +1132,7 @@ function taskJDZZUrl2(params) {
       'Connection': 'keep-alive',
       'Content-Type': 'application/x-www-form-urlencoded',
       'Origin': 'https://wbbny.m.jd.com',
-      'Referer': 'https://wbbny.m.jd.com/babelDiy/Zeus/2vVU4E7JLH9gKYfLQ5EVW6eN2P7B/index.html?babelChannel=jdappsyfc&from=home&lng=116.381712&lat=39.971913&sid=848ed40bf83b638d83b87f0732342a2w&un_area=1_2810_55541_0',
+      'Referer': 'https://service.vapp.jd.com/3CCA5269C1CA14CA76B9955243C60F78/1/page-frame.html',
       'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
       'Accept-Language': 'zh-cn',
       'Accept-Encoding': 'gzip, deflate, br',
