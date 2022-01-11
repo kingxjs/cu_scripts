@@ -72,7 +72,6 @@ $.shopList = [];
     await get_shop_list();
     await $.wait(9000)
     await get_shop_list();
-
     // $.taskBo = true;
     // console.log(`=============== 开始做福袋任务 ===============\n`)
     // await qryCompositeMaterials();
@@ -87,24 +86,31 @@ async function showMsg() {
     await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName}\n${message}`);
   }
 }
+function runShopList() {
+  return new Promise(async (resolve) => {
+    var count = 1;
+    for (let i = 0; i < $.shopList.length; i++) {
+      const item = $.shopList[i];
+      console.info(`${count}，店铺：${item['shopName']}`)
+      await jm_promotion_queryPromotionInfoByShopId({
+        'shopId': item['shopId'],
+        'venderId': item['venderId']
+      })
+      await $.wait((3 + Math.random()) * 1000)
+      count++;
+    }
+    resolve()
+  });
 
+}
 //获取店铺列表
 function get_shop_list() {
 
   return new Promise((resolve) => {
     if ($.shopList.length > 0) {
-      var count = 1;
-      for (let i = 0; i < $.shopList.length; i++) {
-        const item = $.shopList[i];
-        console.info(`${count}，店铺：${item['shopName']}`)
-        await jm_promotion_queryPromotionInfoByShopId({
-          'shopId': item['shopId'],
-          'venderId': item['venderId']
-        })
-        await $.wait((3 + Math.random()) * 1000)
-        count++;
-      }
-      resolve();
+      runShopList().then(() => {
+        resolve();
+      });
       return;
     }
 
@@ -196,20 +202,22 @@ function get_shop_info(shop) {
           data = JSON.parse(data);
           if (data && data.success) {
             var shop_name = data.data.shopInfoVO.shopName;
+            var attention = data.data.userInfo.attention;
             var task_list = data.data.project.viewTaskVOS;
             if (!$.shopList.some(item => item.shopId == shop.shopId)) {
               var params2 = JSON.parse(JSON.stringify(shop));
               params2['shopName'] = shop_name;
               $.shopList.push(params2)
             }
-            console.info(`开始做店铺:《${shop_name}》的任务`)
-            await followShop(shop.shopId, shop.miniAppId)
-            await tanmi(shop, shop.miniAppId)
+            console.info(`开始做店铺:《${shop_name}》的任务`, JSON.stringify(shop))
+            if (!attention)
+              await followShop(shop.shopId, shop.miniAppId)
+            // await tanmi(shop, shop.miniAppId)//潮玩探秘
             for (let i = 0; i < task_list.length; i++) {
               var params = JSON.parse(JSON.stringify(shop));
               const task = task_list[i];
               console.info(`开始做任务:${task.name},${task.type}`)
-              if (task.type === 1) {
+              if (task.type === 11) {
                 params['taskId'] = task.id
                 params['token'] = task.token
                 params['opType'] = 2
@@ -232,15 +240,16 @@ function get_shop_info(shop) {
                   if (!$.duration || $.duration < 9) $.duration = 9;
                   console.info(`等待${$.duration}秒`)
                   await $.wait(($.duration + Math.random()) * 1000)
+                  params['opType'] = 2
+                  await jm_task_process(shop_name, params)
                 }
               }
               else if (task.type === 3 || task.type === 5) {
-                params['taskId'] = task.id
-                params['token'] = task.token
-                await jm_goods_taskGoods(shop_name, task.type, task.totalCount - task.finishCount, params)
-                if (!$.duration || $.duration < 9) $.duration = 9;
-                console.info(`等待${$.duration}秒`)
-                await $.wait(($.duration + Math.random()) * 1000)
+                if (task.totalCount > task.finishCount) {
+                  params['taskId'] = task.id
+                  params['token'] = task.token
+                  await jm_goods_taskGoods(shop_name, task.type, task.totalCount, task.finishCount, params)
+                }
                 // for (let i = task.finishCount, j = 0; i < task.totalCount; ++i, ++j) {
                 //   await jm_goods_taskGoods(shop_name, task.type, params)
                 //   if (!$.duration || $.duration < 9) $.duration = 9;
@@ -349,8 +358,9 @@ function jm_task_process(shop_name, params) {
   })
 }
 //加购浏览 店铺商品
-function jm_goods_taskGoods(shop_name, type, count, params) {
+function jm_goods_taskGoods(shop_name, type, totalCount, finishCount, params) {
   return new Promise((resolve) => {
+    var count = totalCount - finishCount;
     var options = taskPostUrl3('jm_goods_taskGoods', params)
     options.headers['Origin'] = `https://service.vapp.jd.com`;
     options.headers['Referer'] = `https://service.vapp.jd.com/${params['miniAppId']}/1/page-frame.html`;
@@ -361,27 +371,22 @@ function jm_goods_taskGoods(shop_name, type, count, params) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          data = JSON.parse(data);
           if (data && data.success) {
             sku_list = data.data.skuList;
-            for (let i = 0; i < sku_list.length && i < count; i++) {
+            for (let i = finishCount, j = 0; i < sku_list.length && j < count; i++, j++) {
               const sku = sku_list[i];
               var p = JSON.parse(JSON.stringify(params));
-
+              if (!$.duration || $.duration < 9) $.duration = 9;
               p['referSource'] = sku['skuId']
               if (type == 3) {
                 p['opType'] = 1
                 await jm_task_process(shop_name, p)
+                console.info(`等待${$.duration}秒`)
+                await $.wait(($.duration + Math.random()) * 1000)
               }
-
               p['opType'] = 2
               var res = await jm_task_process(shop_name, p)
-              if (!res) {
-                resolve();
-                return;
-              }
-              console.info(`店铺:《${shop_name}》, 加购《${sku['name']}》, 获得奖励:${res && res.awardVO}`)
-              if (!$.duration || $.duration < 9) $.duration = 9;
+              console.info(`店铺:《${shop_name}》, 《${sku['name']}》, 获得奖励:`, JSON.stringify(res))
               console.info(`等待${$.duration}秒`)
               await $.wait(($.duration + Math.random()) * 1000)
             }
