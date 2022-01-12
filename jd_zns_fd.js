@@ -1,10 +1,10 @@
 /*
-炸年兽-福袋
+炸年兽-店铺小程序任务
 活动入口：主页右下角
 [Script]
 cron "0 3 * * *" script-path=js_smzdm_signin.js
  */
-const $ = new Env('炸年兽-福袋');
+const $ = new Env('炸年兽-店铺小程序任务');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
@@ -69,9 +69,10 @@ $.shopList = [];
     // await qryCompositeMaterials();
 
     console.log(`=============== 开始做店铺小程序任务 ===============\n`)
+
     await get_shop_list();
-    await $.wait(9000)
-    await get_shop_list();
+   
+    
     // $.taskBo = true;
     // console.log(`=============== 开始做福袋任务 ===============\n`)
     // await qryCompositeMaterials();
@@ -86,34 +87,11 @@ async function showMsg() {
     await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `【京东账号${$.index}】${$.nickName}\n${message}`);
   }
 }
-function runShopList() {
-  return new Promise(async (resolve) => {
-    var count = 1;
-    for (let i = 0; i < $.shopList.length; i++) {
-      const item = $.shopList[i];
-      console.info(`${count}，店铺：${item['shopName']}`)
-      await jm_promotion_queryPromotionInfoByShopId({
-        'shopId': item['shopId'],
-        'venderId': item['venderId']
-      })
-      await $.wait((3 + Math.random()) * 1000)
-      count++;
-    }
-    resolve()
-  });
 
-}
 //获取店铺列表
 function get_shop_list() {
 
   return new Promise((resolve) => {
-    if ($.shopList.length > 0) {
-      runShopList().then(() => {
-        resolve();
-      });
-      return;
-    }
-
     var body = {
       "qryParam": "[{\"type\":\"advertGroup\",\"mapTo\":\"homeMsgs\",\"id\":\"05863713\"},{\"type\":\"advertGroup\",\"mapTo\":\"homeBtnDrawNotFirsts\",\"id\":\"06079449\"},{\"type\":\"advertGroup\",\"id\":\"06079417\",\"mapTo\":\"homePullDowner\"},{\"type\":\"advertGroup\",\"id\":\"06079457\",\"mapTo\":\"homeNaming\"},{\"type\":\"advertGroup\",\"id\":\"05863717\",\"mapTo\":\"homeBtnLink\"},{\"type\":\"advertGroup\",\"id\":\"06079423\",\"mapTo\":\"homePopupPrivateDomain\"},{\"type\":\"advertGroup\",\"id\":\"05863725\",\"mapTo\":\"homeBtnBranch\"},{\"type\":\"advertGroup\",\"id\":\"05863757\",\"mapTo\":\"homeBtnMainDivided\"},{\"type\":\"advertGroup\",\"id\":\"06082301\",\"mapTo\":\"homeBtnTaskKoi\"},{\"type\":\"advertGroup\",\"id\":\"05863748\",\"mapTo\":\"homeBtnTaskUnavailable\"},{\"type\":\"advertGroup\",\"id\":\"06083624\",\"mapTo\":\"homeBtnKoi\"},{\"type\":\"advertGroup\",\"id\":\"06079457\",\"mapTo\":\"homePopupFallingRedbag\"},{\"type\":\"advertGroup\",\"mapTo\":\"babelCountDownFromAdv\",\"id\":\"05884370\"},{\"type\":\"advertGroup\",\"mapTo\":\"taskPanelBanner\",\"id\":\"05863785\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerT\",\"id\":\"06079452\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerS\",\"id\":\"06079411\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerA\",\"id\":\"06079430\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerB\",\"id\":\"05861004\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomHeadPic\",\"id\":\"05872092\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData0\",\"id\":\"06110848\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData1\",\"id\":\"06110849\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData2\",\"id\":\"06110876\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData3\",\"id\":\"06110889\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData4\",\"id\":\"06110899\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData5\",\"id\":\"06110902\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData6\",\"id\":\"06110898\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData7\",\"id\":\"06110893\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData8\",\"id\":\"06110890\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData9\",\"id\":\"06110887\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData10\",\"id\":\"06110872\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData11\",\"id\":\"06110862\"},{\"type\":\"advertGroup\",\"mapTo\":\"fissionData\",\"id\":\"06082228\"},{\"type\":\"advertGroup\",\"mapTo\":\"newProds\",\"id\":\"06079447\"}]",
       "activityId": "41AJZXRUJeTqdBK9bPoPgUJiodcU",
@@ -190,7 +168,8 @@ function jm_promotion_queryPromotionInfoByShopId(shop) {
     })
   })
 }
-function get_shop_info(shop) {
+function get_shop_info(shop, isFrist) {
+  isFrist = isFrist || true;
   return new Promise((resolve) => {
     var options = taskJDZZUrl2(`functionId=jm_marketing_maininfo&body=${JSON.stringify(shop)}&client=wh5&clientVersion=10.0.0&appid=shop_view&uuid=256b203b3fc96a096d79d23f890c24d517d324d2&t=${(new Date).getTime()}&eid=eidI374A0112Q0NGMzY5RTItQUNBOC00Nw==4TVThAzwO7B3noqPTjLi8HvRnf5ZIdhigqvCSo4m5l2bJQJbD8a/rf9nqKqKh241mJSaOnR52SCzJYK0`)
     $.post(options, async (err, resp, data) => {
@@ -217,7 +196,7 @@ function get_shop_info(shop) {
               var params = JSON.parse(JSON.stringify(shop));
               const task = task_list[i];
               console.info(`开始做任务:${task.name},${task.type}`)
-              if (task.type === 1) {
+              if (task.type === 11) {
                 params['taskId'] = task.id
                 params['token'] = task.token
                 params['opType'] = 2
@@ -258,6 +237,8 @@ function get_shop_info(shop) {
                 // }
               }
             }
+            if (!isFrist)
+              await get_shop_info(shop, false)
           }
           else {
             console.log(data.msg)
@@ -371,6 +352,7 @@ function jm_goods_taskGoods(shop_name, type, totalCount, finishCount, params) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
+          data = JSON.parse(data);
           if (data && data.success) {
             sku_list = data.data.skuList;
             for (let i = finishCount, j = 0; i < sku_list.length && j < count; i++, j++) {
@@ -391,7 +373,7 @@ function jm_goods_taskGoods(shop_name, type, totalCount, finishCount, params) {
               await $.wait(($.duration + Math.random()) * 1000)
             }
           } else {
-            console.log('jm_goods_taskGoods',data.msg)
+            console.log(data.msg)
           }
         }
       } catch (e) {
