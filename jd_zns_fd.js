@@ -65,8 +65,8 @@ $.shopList = [];
       continue
     }
     console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-    console.log(`=============== 开始做福袋任务 ===============\n`)
-    await qryCompositeMaterials();
+    // console.log(`=============== 开始做福袋任务 ===============\n`)
+    // await qryCompositeMaterials();
 
     console.log(`=============== 开始做店铺小程序任务 ===============\n`)
 
