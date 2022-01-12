@@ -1,10 +1,10 @@
 /*
-炸年兽-店铺小程序任务
+炸年兽-福袋
 活动入口：主页右下角
 [Script]
 cron "0 3 * * *" script-path=js_smzdm_signin.js
  */
-const $ = new Env('炸年兽-店铺小程序任务');
+const $ = new Env('炸年兽-福袋');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
@@ -237,7 +237,7 @@ function get_shop_info(shop, isFrist) {
                 // }
               }
             }
-            if (!isFrist)
+            if (isFrist)
               await get_shop_info(shop, false)
           }
           else {
