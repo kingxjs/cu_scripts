@@ -71,11 +71,6 @@ $.shopList = [];
     console.log(`=============== 开始做店铺小程序任务 ===============\n`)
 
     await get_shop_list();
-   
-    
-    // $.taskBo = true;
-    // console.log(`=============== 开始做福袋任务 ===============\n`)
-    // await qryCompositeMaterials();
 
   }
 
@@ -169,7 +164,7 @@ function jm_promotion_queryPromotionInfoByShopId(shop) {
   })
 }
 function get_shop_info(shop, isFrist) {
-  isFrist = isFrist || true;
+  isFrist = isFrist == undefined ? true : isFrist;
   return new Promise((resolve) => {
     var options = taskJDZZUrl2(`functionId=jm_marketing_maininfo&body=${JSON.stringify(shop)}&client=wh5&clientVersion=10.0.0&appid=shop_view&uuid=256b203b3fc96a096d79d23f890c24d517d324d2&t=${(new Date).getTime()}&eid=eidI374A0112Q0NGMzY5RTItQUNBOC00Nw==4TVThAzwO7B3noqPTjLi8HvRnf5ZIdhigqvCSo4m5l2bJQJbD8a/rf9nqKqKh241mJSaOnR52SCzJYK0`)
     $.post(options, async (err, resp, data) => {
