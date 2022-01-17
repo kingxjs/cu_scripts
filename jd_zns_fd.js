@@ -227,7 +227,7 @@ function get_shop_info(shop, isFrist) {
               }
             }
             if (isFrist)
-              await get_shop_info(shop, false)
+              //await get_shop_info(shop, false)
           }
           else {
             console.log(data.msg)
