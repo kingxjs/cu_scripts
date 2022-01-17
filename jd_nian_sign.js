@@ -74,12 +74,12 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
     })
 async function jdNian() {
   try {
-    await getHomeData()
-    if(!$.secretp) return
+    //await getHomeData()
+    //if(!$.secretp) return
     await queryMaterials2()
-    await $.wait(2000)
-    await getHomeData(true)
-    await showMsg()
+    //await $.wait(2000)
+    //await getHomeData(true)
+    //await showMsg()
   } catch (e) {
     $.logErr(e)
   }
