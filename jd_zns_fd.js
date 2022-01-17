@@ -122,7 +122,7 @@ function get_shop_list() {
             }
 
           } else {
-            console.log(data.data.bizMsg)
+            console.log(data.msg)
           }
         }
       } catch (e) {
