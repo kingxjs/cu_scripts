@@ -87,7 +87,12 @@ async function showMsg() {
 function get_shop_list() {
 
   return new Promise((resolve) => {
-    var body = {"qryParam":"[{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerT\",\"id\":\"06079452\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerS\",\"id\":\"06079411\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerA\",\"id\":\"06079430\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBannerB\",\"id\":\"05861004\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomHeadPic\",\"id\":\"05872092\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData0\",\"id\":\"06110848\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData1\",\"id\":\"06110849\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData2\",\"id\":\"06110876\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData3\",\"id\":\"06110889\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData4\",\"id\":\"06110899\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData5\",\"id\":\"06110902\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData6\",\"id\":\"06110898\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData7\",\"id\":\"06110893\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData8\",\"id\":\"06110890\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData9\",\"id\":\"06110887\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData10\",\"id\":\"06110872\"},{\"type\":\"advertGroup\",\"mapTo\":\"feedBottomData11\",\"id\":\"06110862\"},{\"type\":\"advertGroup\",\"mapTo\":\"fissionData\",\"id\":\"06082228\"},{\"type\":\"advertGroup\",\"mapTo\":\"newProds\",\"id\":\"06079447\"}]","activityId":"41AJZXRUJeTqdBK9bPoPgUJiodcU","pageId":"","reqSrc":"","applyKey":"jd_star"}
+    var body = {"qryParam":"[{'type':'advertGroup','mapTo':'feedBannerT','id':'06079452'},{'type':'advertGroup','mapTo':'feedBannerS','id':'06079411'},{'type':'advertGroup','mapTo':'feedBannerA','id':'06079430'},{'type':'advertGroup','mapTo':'feedBannerB','id':'05861004'},{'type':'advertGroup','mapTo':'feedBottomHeadPic','id':'05872092'},{'type':'advertGroup','mapTo':'feedBottomData0','id':'06110848'},{'type':'advertGroup','mapTo':'feedBottomData1','id':'06110849'},{'type':'advertGroup','mapTo':'feedBottomData2','id':'06110876'},{'type':'advertGroup','mapTo':'feedBottomData3','id':'06110889'},{'type':'advertGroup','mapTo':'feedBottomData4','id':'06110899'},{'type':'advertGroup','mapTo':'feedBottomData5','id':'06110902'},{'type':'advertGroup','mapTo':'feedBottomData6','id':'06110898'},{'type':'advertGroup','mapTo':'feedBottomData7','id':'06110893'},{'type':'advertGroup','mapTo':'feedBottomData8','id':'06110890'},{'type':'advertGroup','mapTo':'feedBottomData9','id':'06110887'},{'type':'advertGroup','mapTo':'feedBottomData10','id':'06110872'},{'type':'advertGroup','mapTo':'feedBottomData11','id':'06110862'},{'type':'advertGroup','mapTo':'fissionData','id':'06082228'},{'type':'advertGroup','mapTo':'newProds','id':'06079447'}]",
+"activityId":"41AJZXRUJeTqdBK9bPoPgUJiodcU",
+"pageId":"",
+"reqSrc":"",
+"applyKey":"jd_star"
+}
     var options = taskPostUrl('qryCompositeMaterials', body, "qryCompositeMaterials")
     $.post(options, async (err, resp, data) => {
       try {
@@ -226,7 +231,7 @@ function get_shop_info(shop, isFrist) {
                 // }
               }
             }
-            if (isFrist)
+            //if (isFrist)
               //await get_shop_info(shop, false)
           }
           else {
