@@ -139,7 +139,6 @@ function getHomeData(info=false) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          console.info(data)
           data = JSON.parse(data);
           if (data && data.data['bizCode'] === 0) {
             $.userInfo = data.data.result.homeMainInfo
@@ -197,7 +196,7 @@ function collectScore(taskId,itemId,actionType=null,inviteId=null,shopSign=null)
   if(inviteId) body['inviteId'] = inviteId
   if(shopSign) body['shopSign'] = shopSign
   return new Promise(resolve => {
-    $.get(taskUrl("nian_collectScore", body), async (err, resp, data) => {
+    $.get(taskUrl("tigernian_collectScore", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -228,7 +227,7 @@ function collectScore(taskId,itemId,actionType=null,inviteId=null,shopSign=null)
 
 function getTaskList() {
   return new Promise(resolve => {
-    $.get(taskUrl("nian_getTaskDetail", {"appSign":"2","channel":1}), async (err, resp, data) => {
+    $.get(taskUrl("tigernian_getTaskDetail", {"appSign":"2","channel":1}), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
