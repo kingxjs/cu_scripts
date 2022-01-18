@@ -133,12 +133,13 @@ async function doTask() {
 
 function getHomeData(info=false) {
   return new Promise((resolve) => {
-    $.get(taskUrl('nian_getHomeData',{"inviteId":"","channel":1}), async (err, resp, data) => {
+    $.get(taskUrl('tigernian_getHomeData',{"inviteId":"","channel":1}), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
+          console.info(data)
           data = JSON.parse(data);
           if (data && data.data['bizCode'] === 0) {
             $.userInfo = data.data.result.homeMainInfo
