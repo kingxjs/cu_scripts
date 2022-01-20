@@ -38,6 +38,9 @@ $.shopList = [];
   $.inviteIdCodesArr = {}
   console.log(`开始获取活动信息`);
   for (let i = 0; (cookiesArr.length < 3 ? i < cookiesArr.length : i < 3) && $.activityId === ''; i++) {
+    if (i == 0) {
+      continue;
+    }
     $.index = i + 1;
     $.cookie = cookiesArr[i];
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
@@ -103,13 +106,11 @@ function get_shop_list() {
         } else {
           data = JSON.parse(data);
           if (data && data['code'] === '0' || data['code'] === 0) {
-
-            var count = 1;
+            $.count = 1;
             for (let index = 0; index < 12; index++) {
               var item_list = data.data[`feedBottomData${index}`]['list'];
               if (item_list) {
-
-                for (let i = 0; i < item_list.length; i++) {
+                for (let i = 0; i < item_list.length && $.count <= 40; i++) {
                   const item = item_list[i];
                   console.info(`${count}，店铺：${item['extension']['shopInfo']['shopName']}`)
                   await jm_promotion_queryPromotionInfoByShopId({
@@ -117,7 +118,7 @@ function get_shop_list() {
                     'venderId': item['extension']['shopInfo']['venderId']
                   })
                   await $.wait((3 + Math.random()) * 1000)
-                  count++;
+
                 }
               }
             }
@@ -175,6 +176,7 @@ function get_shop_info(shop, isFrist) {
         } else {
           data = JSON.parse(data);
           if (data && data.success) {
+            $.count++;
             var shop_name = data.data.shopInfoVO.shopName;
             var attention = data.data.userInfo.attention;
             var task_list = data.data.project.viewTaskVOS;
@@ -191,19 +193,19 @@ function get_shop_info(shop, isFrist) {
               var params = JSON.parse(JSON.stringify(shop));
               const task = task_list[i];
               console.info(`开始做任务:${task.name},${task.type}`)
-              if (task.type === 11) {
-                params['taskId'] = task.id
-                params['token'] = task.token
-                params['opType'] = 2
-                params['functionIdFixed'] = 'jm_task_process_play'
-                for (let j = 0; j < task.coinCost; j++) {
-                  var res = await jm_task_process(shop_name, params)
-                  if (res)
-                    console.info(`店铺:《${shop_name}》, 抽奖一次, 获得奖励:${JSON.stringify(res.awardVO)}`)
-                  if (!$.duration || $.duration < 9) $.duration = 9;
-                  console.info(`等待${$.duration}秒`)
-                  await $.wait(($.duration + Math.random()) * 1000)
-                }
+              if (task.type === 1) {
+                // params['taskId'] = task.id
+                // params['token'] = task.token
+                // params['opType'] = 2
+                // params['functionIdFixed'] = 'jm_task_process_play'
+                // for (let j = 0; j < task.coinCost; j++) {
+                //   var res = await jm_task_process(shop_name, params)
+                //   if (res)
+                //     console.info(`店铺:《${shop_name}》, 抽奖一次, 获得奖励:${JSON.stringify(res.awardVO)}`)
+                //   if (!$.duration || $.duration < 9) $.duration = 9;
+                //   console.info(`等待${$.duration}秒`)
+                //   await $.wait(($.duration + Math.random()) * 1000)
+                // }
               }
               else if (task.type === 8) {
                 params['taskId'] = task.id
@@ -309,7 +311,7 @@ function jm_task_process(shop_name, params) {
     var options = taskPostUrl3('jm_task_process', params)
     options.headers['Origin'] = `https://service.vapp.jd.com`;
     options.headers['Referer'] = `https://service.vapp.jd.com/${params['miniAppId']}/1/page-frame.html`;
-    options.headers['User-Agent'] = 'JD4iPhone\/167853 (iPhone; iOS 14.8; Scale\/3.00)';
+    options.headers['User-Agent'] = 'jdapp;iPhone;10.3.2;;;M/5.0;appBuild/167922;jdSupportDarkMode/0;ef/1;ep/%7B%22ciphertype%22%3A5%2C%22cipher%22%3A%7B%22ud%22%3A%22CtU2YtSmC2SzZwC5DwOmEJZuDzvuCtDwENumYzS0ZNUnD2GzCtHuCq%3D%3D%22%2C%22sv%22%3A%22CJUkCq%3D%3D%22%2C%22iad%22%3A%22%22%7D%2C%22ts%22%3A1642423758%2C%22hdid%22%3A%22JM9F1ywUPwflvMIpYPok0tt5k9kW4ArJEU3lfLhxBqw%3D%22%2C%22version%22%3A%221.0.3%22%2C%22appname%22%3A%22com.360buy.jdmobile%22%2C%22ridx%22%3A-1%7D;Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1;';
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
@@ -340,7 +342,7 @@ function jm_goods_taskGoods(shop_name, type, totalCount, finishCount, params) {
     var options = taskPostUrl3('jm_goods_taskGoods', params)
     options.headers['Origin'] = `https://service.vapp.jd.com`;
     options.headers['Referer'] = `https://service.vapp.jd.com/${params['miniAppId']}/1/page-frame.html`;
-    options.headers['User-Agent'] = 'JD4iPhone\/167853 (iPhone; iOS 14.8; Scale\/3.00)';
+    options.headers['User-Agent'] = 'jdapp;iPhone;10.3.2;;;M/5.0;appBuild/167922;jdSupportDarkMode/0;ef/1;ep/%7B%22ciphertype%22%3A5%2C%22cipher%22%3A%7B%22ud%22%3A%22CtU2YtSmC2SzZwC5DwOmEJZuDzvuCtDwENumYzS0ZNUnD2GzCtHuCq%3D%3D%22%2C%22sv%22%3A%22CJUkCq%3D%3D%22%2C%22iad%22%3A%22%22%7D%2C%22ts%22%3A1642423758%2C%22hdid%22%3A%22JM9F1ywUPwflvMIpYPok0tt5k9kW4ArJEU3lfLhxBqw%3D%22%2C%22version%22%3A%221.0.3%22%2C%22appname%22%3A%22com.360buy.jdmobile%22%2C%22ridx%22%3A-1%7D;Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1;';
     $.post(options, async (err, resp, data) => {
       try {
         if (err) {
