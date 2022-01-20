@@ -112,7 +112,7 @@ function get_shop_list() {
               if (item_list) {
                 for (let i = 0; i < item_list.length && $.count <= 40; i++) {
                   const item = item_list[i];
-                  console.info(`${count}，店铺：${item['extension']['shopInfo']['shopName']}`)
+                  console.info(`${$.count}，店铺：${item['extension']['shopInfo']['shopName']}`)
                   await jm_promotion_queryPromotionInfoByShopId({
                     'shopId': item['link'],
                     'venderId': item['extension']['shopInfo']['venderId']
