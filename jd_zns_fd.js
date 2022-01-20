@@ -38,9 +38,7 @@ $.shopList = [];
   $.inviteIdCodesArr = {}
   console.log(`开始获取活动信息`);
   for (let i = 0; (cookiesArr.length < 3 ? i < cookiesArr.length : i < 3) && $.activityId === ''; i++) {
-    if (i == 0) {
-      continue;
-    }
+    
     $.index = i + 1;
     $.cookie = cookiesArr[i];
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
