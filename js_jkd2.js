@@ -11,12 +11,8 @@ nodejs变量
 export jkdck='"xz_jkd_appkey=xxxxxxxx!iOS!5.6.5"'
 多账号用@隔开
 [Script]
-cron "0 7-22/1 * * *" script-path=https://raw.githubusercontent.com/shylocks/Loon/main/jkd.js
+cron "10 10 * * *" script-path=https://raw.githubusercontent.com/shylocks/Loon/main/jkd.js
 */
-
-// [task_local]
-//#聚看点
-// 10 10 * * * https://gitee.com/gossh520/script/raw/master/jkdapp.js, tag=聚看点, enabled=true
 const $ = new Env('聚看点APP');
 const notify = $.isNode() ? require('./sendNotify') : '';
 let status;
