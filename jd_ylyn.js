@@ -3,7 +3,7 @@
 
 如果提示没有养牛 自己手动进去养一只
 活动入口：伊利京东自营旗舰店->伊利牛奶
-21.0复制整段话 Http:/JnE0bflXQPzN4R 伊利云养一头牛，赢1分钱得牛奶一提！坚持打卡~每日多个好礼相送哟！快来云养的牛宝宝吧！#f1EQN5nQJa%去【椋〣崬】
+23:/！BCBpg6ZtDV！，伊利云养一头牛，赢1分钱得牛奶一提！坚持打卡~每日多个好礼相送哟！快来云养的牛宝宝吧！
 
 [task_local]
 #伊利养牛记
@@ -424,16 +424,18 @@ function feedCow() {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    data = JSON.parse(data);
-                    if (data.result) {
-                        if (data.data) {
-                            $.cs = data.data.score2*0.1
-                            $.cj = data.data.assistCount
-                            $.log($.cj)
-                            console.log(`老牛等级:${data.data.level}\n下一等级还需吃奶:${data.data.score*0.1}\n剩余奶滴:${data.data.score2*0.1}`)
+                    if(data){
+                        data = JSON.parse(data);
+                        if (data.result) {
+                            if (data.data) {
+                                $.cs = data.data.score2*0.1
+                                $.cj = data.data.assistCount
+                                $.log($.cj)
+                                console.log(`老牛等级:${data.data.level}\n下一等级还需吃奶:${data.data.score*0.1}\n剩余奶滴:${data.data.score2*0.1}`)
+                            }
+                        } else {
+                            console.log(data.errorMessage)
                         }
-                    } else {
-                        console.log(data.errorMessage)
                     }
                 }
             } catch (e) {
@@ -458,13 +460,15 @@ function dotask(taskType, taskValue) {
                     console.log(`${JSON.stringify(err)}`)
                     console.log(`${$.name} API请求失败，请检查网路重试`)
                 } else {
-                    data = JSON.parse(data);
-                    if (data.result) {
-                        if (data.data) {
-                            console.log("恭喜你,获得奶滴： " + data.data.milkCount )
+                    if(data){
+                        data = JSON.parse(data);
+                        if (data.result) {
+                            if (data.data) {
+                                console.log("恭喜你,获得奶滴： " + data.data.milkCount )
+                            }
+                        } else {
+                            console.log(data.errorMessage)
                         }
-                    } else {
-                        console.log(data.errorMessage)
                     }
                 }
             } catch (e) {
