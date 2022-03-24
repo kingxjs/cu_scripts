@@ -1,7 +1,8 @@
 /*
 超级互动城
-[Script]
-cron "10 8,18 * * *"
+
+[task_local]
+cron 10 8,18 * * * jd_attentionActivity.js, tag=超级互动城, enabled=true
  */
 const $ = new Env('超级互动城');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
