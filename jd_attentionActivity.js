@@ -790,7 +790,7 @@ function accessLogWithAD(item) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
