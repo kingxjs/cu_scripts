@@ -207,7 +207,7 @@ function getActivityInfo(token, venderId) {
                     var levels = [];
                     for (let i = 0; i < data.data.continuePrizeRuleList.length; i++) {
                         const level = data.data.continuePrizeRuleList[i].level
-                        const discount = data.data.continuePrizeRuleList[i].prizeList[0].discount
+                        var discount = data.data.continuePrizeRuleList[i].prizeList[0].discount
                         const type = data.data.continuePrizeRuleList[i].prizeList[0].type
                         if (type == 4) {
                             discount = discount + '京豆'
