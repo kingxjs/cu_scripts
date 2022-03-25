@@ -283,7 +283,7 @@ function taskUrl(token, venderId) {
                     console.log(`已签到：` + data.data.days + `天`)
                     message += `已签到：` + data.data.days + `天`
                     if ($.shopReward[data.data.days]) {
-                        console.log(`，获得：` + $.shopReward[data.data.days] + ` 豆`)
+                        console.log(`获得：` + $.shopReward[data.data.days] + ` 豆`)
                         message += `，获得：` + $.shopReward[data.data.days] + ` 豆`
                     }
                     if ($.shopReward["levels"]) {
@@ -295,7 +295,7 @@ function taskUrl(token, venderId) {
                             }
                         }
                         if (!result) {
-                            console.log(`，可删除`)
+                            console.log(`可删除token了`)
                             message += `，可删除`
                         }
                     }
