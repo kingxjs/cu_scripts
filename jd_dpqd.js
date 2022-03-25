@@ -202,7 +202,7 @@ function getActivityInfo(token, venderId) {
                     //console.log(data)
                     data = JSON.parse(/{(.*)}/g.exec(data)[0])
                     activityId = data.data.id
-                    console.log(JSON.stringify(data))
+                    // console.log(JSON.stringify(data))
                     let mes = '';
                     var levels = [];
                     for (let i = 0; i < data.data.continuePrizeRuleList.length; i++) {
