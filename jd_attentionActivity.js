@@ -410,18 +410,19 @@ function getPrize(item) {
                     console.log(data)
                     if(data){
                         data = JSON.parse(data);
-                        if(data.data && data.data.name){
-                            console.log("领取成功：", data.data.name)
-                        }
                         if(data.errorMessage){
                             console.log(data.errorMessage)
+                        }
+                        data = data.data;
+                        if(data && data.name){
+                            console.log("领取成功：", data.data.name)
                         }
                     }
                 }
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -451,19 +452,20 @@ function wxShopFollowActivity_getPrize(item) {
                 } else {
                     if(data){
                         data = JSON.parse(data);
-                        if(data.data && data.data.name){
-                            console.log("")
-                        }
                         if(data.errorMessage){
                             console.log(data.errorMessage)
                         }
+                        data = data.data;
+                        if(data && data.name){
+                            console.log('领取成功：'+data.name)
+                        }
                     }
-                    console.log('wxShopFollowActivity_getPrize',data)
+//                     console.log('wxShopFollowActivity_getPrize',data)
                 }
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -589,12 +591,13 @@ function oneKeyAddCart(item,productIds) {
                     if (data) {
                         console.info('oneKeyAddCart',data)
                         data = JSON.parse(data);
-                        if(data.data && data.data.hasCollectionSize){
-                            $.hasCollectionSize = data.data.hasCollectionSize;
+                        data = data.data;
+                        if(data && data.hasCollectionSize){
+                            $.hasCollectionSize = data.hasCollectionSize;
                             console.log(`关注商品成功`)
                         }
-                        if(data.data && data.data.hasAddCartSize){
-                            $.hasAddCartSize = data.data.hasAddCartSize;
+                        if(data && data.hasAddCartSize){
+                            $.hasAddCartSize = data.hasAddCartSize;
                             console.log(`加购商品成功`)
                         }
                     }else{
@@ -604,7 +607,7 @@ function oneKeyAddCart(item,productIds) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -655,7 +658,7 @@ function followShop(item) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -750,7 +753,7 @@ function getActMemberInfo(item) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -823,7 +826,8 @@ function queryActivityInfo(item) {
                     if(data && data != ""){
                         data = JSON.parse(data);
                         if(data.data){
-                            let drawContentVOs = data.data.drawContentVOs
+                            data = data.data;
+                            let drawContentVOs = data.drawContentVOs
                             if(drawContentVOs){
                                 let hasBean = false
                                 for(let i =0;i < drawContentVOs.l;i++){
@@ -844,7 +848,7 @@ function queryActivityInfo(item) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -1042,7 +1046,8 @@ function getAllActivitys(aggrateActType,type) {
                     if (data) {
                         data = JSON.parse(data);
                         if (data && data.data) {
-                            $.taskList = data.data.homeInfoResultVOList
+                            data = data.data;
+                            $.taskList = data.homeInfoResultVOList
                         }
                     }                    
                 }
@@ -1132,8 +1137,9 @@ function wxDrawActivity_start(activityId) {
                         // console.info('wxDrawActivity_start',data)
                         data = JSON.parse(data);
                         if (data && data.data) {
-                            $.canDrawTimes = data.data.canDrawTimes;
-                            console.info(`${data.data.name ? ('获得：' + (data.data.type == 8 ? '专享价，' : '') + data.data.name) : "什么也没有"}`)
+                            data = data.data;
+                            $.canDrawTimes = data.canDrawTimes;
+                            console.info(`${data.name ? ('获得：' + (data.type == 8 ? '专享价，' : '') + data.name) : "什么也没有"}`)
                         } else {
                             console.info(`什么也没有`)
                         }
@@ -1144,7 +1150,7 @@ function wxDrawActivity_start(activityId) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
          
@@ -1174,11 +1180,12 @@ function wxShopFollowActivity_getPrize(item,sku) {
                 } else {
                     if(data){
                         data = JSON.parse(data);
-                        if(data.data && data.data.name){
-                            console.log("")
-                        }
                         if(data.errorMessage){
                             console.log(data.errorMessage)
+                        }
+                        data = data.data;
+                        if(data && data.name){
+                            console.log("")
                         }
                     }
                     console.log(data)
@@ -1186,7 +1193,7 @@ function wxShopFollowActivity_getPrize(item,sku) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
@@ -1228,7 +1235,7 @@ function getMyPing() {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
     })
