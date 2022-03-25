@@ -64,7 +64,7 @@ cron 2 0 0 * * * jd_cfd_sc.js
         $.info = {}
         token = await getJxToken()
         await cfd();
-        await $.wait(2000);
+//         await $.wait(2000);
       }
     }
     // let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/cfd.json')
