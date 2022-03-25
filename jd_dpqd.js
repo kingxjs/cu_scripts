@@ -88,6 +88,7 @@ if ($.isNode()) {
 async function dpqd(){
   for (var j = 0; j < token.length; j++) {
     num=j+1
+    $.shopReward={};
     if (token[j]=='') {continue}
     getUA()
     await getvenderId(token[j])
@@ -205,6 +206,7 @@ function getActivityInfo(token,venderId) {
           for (let i = 0; i < data.data.continuePrizeRuleList.length; i++) {
             const level=data.data.continuePrizeRuleList[i].level
             const discount=data.data.continuePrizeRuleList[i].prizeList[0].discount
+            $.shopReward[level]=discount;
             mes += "签到"+level+"天,获得"+discount+'豆'
           }
           // console.log(message+mes+'\n')
@@ -240,7 +242,7 @@ function signCollectGift(token,venderId,activitytemp) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          console.log(data)
+          //console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
         }
       } catch (e) {
@@ -273,10 +275,14 @@ function taskUrl(token,venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          console.log(data)
+          //console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           console.log(`已签到：`+data.data.days+`天`)
           message +=`已签到：`+data.data.days+`天\n`
+          if($.shopReward[data.data.days]){
+            console.log(`获得：`+$.shopReward[data.data.days]+`豆`)
+            message +=`获得：`+$.shopReward[data.data.days]+`豆\n`
+          }
         }
       } catch (e) {
         $.logErr(e, resp);
