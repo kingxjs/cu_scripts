@@ -1054,7 +1054,7 @@ function getAllActivitys(aggrateActType,type) {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.data);
+                resolve(data);
             }
         })
          
@@ -1266,7 +1266,7 @@ function getIsvObfuscatorToken() {
             } catch (e) {
                 $.logErr(e, resp)
             } finally {
-                resolve(data.token);
+                resolve(data);
             }
         })
     })
