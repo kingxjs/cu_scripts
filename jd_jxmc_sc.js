@@ -108,7 +108,7 @@ cron "2 0 0 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/j
 //       }
       token = await getJxToken()
       await pasture();
-      await $.wait(2000);
+//       await $.wait(2000);
     }
  
   })()
