@@ -278,11 +278,12 @@ function taskUrl(token,venderId) {
           //console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           console.log(`已签到：`+data.data.days+`天`)
-          message +=`已签到：`+data.data.days+`天\n`
+          message +=`已签到：`+data.data.days+`天`
           if($.shopReward[data.data.days]){
-            console.log(`获得：`+$.shopReward[data.data.days]+`豆`)
-            message +=`获得：`+$.shopReward[data.data.days]+`豆\n`
+            console.log(`，获得：`+$.shopReward[data.data.days]+` 豆`)
+            message +=`，获得：`+$.shopReward[data.data.days]+` 豆`
           }
+          message +=`\n`
         }
       } catch (e) {
         $.logErr(e, resp);
