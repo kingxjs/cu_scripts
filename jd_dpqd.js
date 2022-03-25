@@ -89,6 +89,7 @@ async function dpqd() {
     for (var j = 0; j < token.length; j++) {
         num = j + 1
         $.shopReward = {};
+        $.shopEveryday = '';
         if (token[j] == '') { continue }
         getUA()
         await getvenderId(token[j])
@@ -207,11 +208,25 @@ function getActivityInfo(token, venderId) {
                     for (let i = 0; i < data.data.continuePrizeRuleList.length; i++) {
                         const level = data.data.continuePrizeRuleList[i].level
                         const discount = data.data.continuePrizeRuleList[i].prizeList[0].discount
+                        const type = data.data.continuePrizeRuleList[i].prizeList[0].type
+                        if (type == 4) {
+                            discount = discount + '京豆'
+                        } if (type == 14) {
+                            discount = discount + '红包'
+                        }
+
                         $.shopReward[level] = discount;
-                        mes += "签到" + level + "天,获得" + discount + '豆'
                         levels.push(level)
                     }
                     $.shopReward["levels"] = levels;
+                    if (data.data.prizeRuleList && data.data.prizeRuleList.length > 0) {
+                        var prizeList = data.data.prizeRuleList[0]["prizeList"][0];
+                        if (prizeList['type'] == 4) {
+                            $.shopEveryday = prizeList['discount'] + '京豆'
+                        } if (prizeList['type'] == 14) {
+                            $.shopEveryday = (prizeList['discount'] / 100) + '红包'
+                        }
+                    }
                     // console.log(message+mes+'\n')
                     // message += mes+'\n'
                 }
@@ -282,9 +297,13 @@ function taskUrl(token, venderId) {
                     data = JSON.parse(/{(.*)}/g.exec(data)[0])
                     console.log(`已签到：` + data.data.days + `天`)
                     message += `已签到：` + data.data.days + `天`
+                    if($.shopEveryday){
+                        console.log(`获得：` + $.shopEveryday)
+                        message += `，获得：` + $.shopEveryday
+                    }
                     if ($.shopReward[data.data.days]) {
-                        console.log(`获得：` + $.shopReward[data.data.days] + ` 豆`)
-                        message += `，获得：` + $.shopReward[data.data.days] + ` 豆`
+                        console.log(`获得：` + $.shopReward[data.data.days])
+                        message += `，获得：` + $.shopReward[data.data.days]
                     }
                     if ($.shopReward["levels"]) {
                         var result = false;
@@ -294,7 +313,7 @@ function taskUrl(token, venderId) {
                                 break;
                             }
                         }
-                        if (!result) {
+                        if (!result && !$.shopEveryday) {
                             console.log(`可删除token了`)
                             message += `，可删除`
                         }
