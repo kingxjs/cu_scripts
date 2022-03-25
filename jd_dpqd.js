@@ -314,8 +314,8 @@ function taskUrl(token, venderId) {
                             }
                         }
                         if (!result && !$.shopEveryday) {
-                            console.log(`可删除token了`)
-                            message += `，可删除`
+                            console.log(`，第${num}个可删除token了`)
+                            message += `，第${num}个可删除`
                         }
                     }
                     message += `\n`
