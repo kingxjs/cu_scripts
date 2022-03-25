@@ -236,6 +236,12 @@ async function taskAllActivitys(aggrateActType, type) {
                 await taskToken();
                 data =await wxDrawActivity_activityContent(item.activityId);
             }
+            if (!data) {
+                console.log(`刷新bin`)
+                await $.wait(1000)
+                await taskToken();
+                data =await wxDrawActivity_activityContent(item.activityId);
+            }
             if (!$.isContinue) {
                 console.log(`\n******第${j + 1}个店铺:${item.shopName}*********\n`)
                 $.canDrawTimes = $.shipInfo.canDrawTimes;
@@ -265,6 +271,12 @@ async function taskAllActivitys(aggrateActType, type) {
             $.isContinue = false
             await accessLogWithAD(item);
             var data =await getActivity(item);
+            if (!data || (data && data.code == '-1')) {
+                console.log(`刷新bin`)
+                await $.wait(1000)
+                await taskToken();
+                data =await getActivity(item);
+            }
             if (!data || (data && data.code == '-1')) {
                 console.log(`刷新bin`)
                 await $.wait(1000)
@@ -999,7 +1011,7 @@ function getActivity(item) {
                         //     $.isContinue = true
                         // } 
                          else if (!(data && data.act.giftJson.includes("京豆"))) {
-                            console.info('getActivity，奖励不是京豆，跳过',data.act.giftJson)
+                            console.info('getActivity，奖励不是京豆，跳过')
                             $.isContinue = true
                         } 
                         else {
