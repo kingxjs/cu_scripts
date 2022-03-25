@@ -203,12 +203,15 @@ function getActivityInfo(token,venderId) {
           activityId=data.data.id
           //console.log(data)
           let mes='';
+          var levels = [];
           for (let i = 0; i < data.data.continuePrizeRuleList.length; i++) {
             const level=data.data.continuePrizeRuleList[i].level
             const discount=data.data.continuePrizeRuleList[i].prizeList[0].discount
             $.shopReward[level]=discount;
             mes += "签到"+level+"天,获得"+discount+'豆'
+            levels.push(level)
           }
+          $.shopReward["levels"]=levels;
           // console.log(message+mes+'\n')
           // message += mes+'\n'
         }
@@ -282,6 +285,18 @@ function taskUrl(token,venderId) {
           if($.shopReward[data.data.days]){
             console.log(`，获得：`+$.shopReward[data.data.days]+` 豆`)
             message +=`，获得：`+$.shopReward[data.data.days]+` 豆`
+          }
+          if($.shopReward["levels"]){
+            var result = false;
+             for (let i = 0; i < $.shopReward["levels"].length; i++) {
+               if($.shopReward["levels"][i]>data.data.days){
+               result = true;
+               }
+             }
+            if(!result){
+            console.log(`，可删除`)
+            message +=`，可删除`
+            }
           }
           message +=`\n`
         }
