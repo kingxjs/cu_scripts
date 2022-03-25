@@ -208,7 +208,7 @@ function getActivityInfo(token,venderId) {
             mes += "签到"+level+"天,获得"+discount+'豆'
           }
           // console.log(message+mes+'\n')
-           message += mes+'\n'
+          // message += mes+'\n'
         }
       } catch (e) {
         $.logErr(e, resp);
@@ -240,7 +240,7 @@ function signCollectGift(token,venderId,activitytemp) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          //console.log(data)
+          console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
         }
       } catch (e) {
@@ -273,7 +273,7 @@ function taskUrl(token,venderId) {
           console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
           $.logErr(err);
         } else {
-          //console.log(data)
+          console.log(data)
           data = JSON.parse(/{(.*)}/g.exec(data)[0])
           console.log(`已签到：`+data.data.days+`天`)
           message +=`已签到：`+data.data.days+`天\n`
