@@ -162,7 +162,7 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
                 console.log(`去做【${vo.boardParams.titleText}】`)
                 await getTaskInfo("9", vo.boardParams.projectCode, vo.boardParams.taskCode)
                 await $.wait(2000)
-              } else if (vo.boardParams && (vo.boardParams.taskCode === "gmYjr6WER26XE8DmENe4BvbVNdm" || vo.boardParams.taskCode === "2M8sBL2RsSaE8nBrGhZGHrNcwNtA" || vo.boardParams.taskCode === "31MsESed1HY5c34gX2dnxD3C7YJF" || vo.boardParams.taskCode === "3FTPWUxG3B3tmFcmZ9e7WggNf2H5")  || vo.boardParams.taskCode === "284dYeG7rdPieV6mB6ZLpvRsqaXt")) {
+              } else if (vo.boardParams && (vo.boardParams.taskCode === "gmYjr6WER26XE8DmENe4BvbVNdm" || vo.boardParams.taskCode === "2M8sBL2RsSaE8nBrGhZGHrNcwNtA" || vo.boardParams.taskCode === "31MsESed1HY5c34gX2dnxD3C7YJF" || vo.boardParams.taskCode === "3FTPWUxG3B3tmFcmZ9e7WggNf2H5" || vo.boardParams.taskCode === "284dYeG7rdPieV6mB6ZLpvRsqaXt")) {
                 await getTaskInfo("1", vo.boardParams.projectCode, vo.boardParams.taskCode)
                 await $.wait(2000)
               }
