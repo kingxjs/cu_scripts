@@ -1,8 +1,8 @@
 /*
 新书大赏-投票
 
-[task_local]
-cron 10 8 * * * jd_attentionActivity.js, tag=新书大赏-投票, enabled=true
+[Script]
+cron "10 8 * * *" script-path=jd_book_vote.js,tag=新书大赏-投票
  */
 const $ = new Env('新书大赏-投票');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -68,8 +68,9 @@ async function main() {
     if(!LZ_TOKEN_KEY || !LZ_TOKEN_VALUE){
         console.log(`初始化失败`);return;
     }
-    await takePostRequest('getSimpleActInfoVo');
     venderId = '688693'
+    await takePostRequest('getSimpleActInfoVo');
+  
     console.log(`venderId :${venderId}`);
     await getMyPing('https://lzdz1-isv.isvjcloud.com/customer/getMyPing');
     if (pin === ``) {hotFlag = true;console.log(`获取pin失败,该账号可能是黑号`);return;}
