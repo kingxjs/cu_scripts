@@ -137,7 +137,8 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
             encodeActivityId = data.activityInfo.encodeActivityId
             paginationFlrs = data.paginationFlrs
             activityId = data.activityInfo.activityId
-            for (var i = 0;i＜data.codeFloors.length;i++) {
+            for (let i = 0; i < data.codeFloors.length; i++) {
+            
               let vo = data.codeFloors[i]
               if (vo.boardParams && vo.boardParams.taskCode === "2CCbSBbVWkFZzRDngs4F6q3YZ62o") {
                 agid = []
