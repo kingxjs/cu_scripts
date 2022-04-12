@@ -137,7 +137,7 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
             encodeActivityId = data.activityInfo.encodeActivityId
             paginationFlrs = data.paginationFlrs
             activityId = data.activityInfo.activityId
-            var codeFloors= JSON.parse(data.codeFloors)
+            var codeFloors= data.codeFloors
             for (let i = 0; i <codeFloors.length; i++) {
             
               let vo = codeFloors[i]
