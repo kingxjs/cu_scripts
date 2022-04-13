@@ -248,7 +248,7 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
                 console.log(data.message)
               }
             } else if (assignmentId ==="3DAwXrfC88jgHMvGpYzF1nBrUFgA" || assignmentId ==="gmYjr6WER26XE8DmENe4BvbVNdm" || assignmentId === "2M8sBL2RsSaE8nBrGhZGHrNcwNtA" || assignmentId === "31MsESed1HY5c34gX2dnxD3C7YJF" || assignmentId === "3FTPWUxG3B3tmFcmZ9e7WggNf2H5" || assignmentId === "284dYeG7rdPieV6mB6ZLpvRsqaXt") {
-              if (assignmentId !== "3DAwXrfC88jgHMvGpYzF1nBrUFgA") console.log(`去做【${data.data[0].title}】`)
+              if (assignmentId !== "3DAwXrfC88jgHMvGpYzF1nBrUFgA" && data && data.data[0]) console.log(`去做【${data.data[0].title}】`)
               if (data.code === "0" && data.data) {
                 if (data.data[0]) {
                   if (data.data[0].status !== "2") {
