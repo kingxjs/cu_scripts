@@ -247,15 +247,15 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
               } else {
                 console.log(data.message)
               }
-            } else if (assignmentId ==="gmYjr6WER26XE8DmENe4BvbVNdm" || assignmentId ==="gmYjr6WER26XE8DmENe4BvbVNdm" || assignmentId === "2M8sBL2RsSaE8nBrGhZGHrNcwNtA" || assignmentId === "31MsESed1HY5c34gX2dnxD3C7YJF" || assignmentId === "3FTPWUxG3B3tmFcmZ9e7WggNf2H5" || assignmentId === "284dYeG7rdPieV6mB6ZLpvRsqaXt") {
-              if (assignmentId !== "gmYjr6WER26XE8DmENe4BvbVNdm") console.log(`去做【${data.data[0].title}】`)
+            } else if (assignmentId ==="3DAwXrfC88jgHMvGpYzF1nBrUFgA" || assignmentId ==="gmYjr6WER26XE8DmENe4BvbVNdm" || assignmentId === "2M8sBL2RsSaE8nBrGhZGHrNcwNtA" || assignmentId === "31MsESed1HY5c34gX2dnxD3C7YJF" || assignmentId === "3FTPWUxG3B3tmFcmZ9e7WggNf2H5" || assignmentId === "284dYeG7rdPieV6mB6ZLpvRsqaXt") {
+              if (assignmentId !== "3DAwXrfC88jgHMvGpYzF1nBrUFgA") console.log(`去做【${data.data[0].title}】`)
               if (data.code === "0" && data.data) {
                 if (data.data[0]) {
                   if (data.data[0].status !== "2") {
                     await interactive_done(type, data.data[0].projectId, data.data[0].assignmentId, data.data[0].itemId)
                     await $.wait((data.data[0].waitDuration * 1000) || 2000)
                   } else {
-                    console.log(assignmentId === "gmYjr6WER26XE8DmENe4BvbVNdm" ? `今日已签到` : `任务已完成`)
+                    console.log(assignmentId === "3DAwXrfC88jgHMvGpYzF1nBrUFgA" ? `今日已签到` : `任务已完成`)
                   }
                 } else {
                   console.log(`无当前任务`)
