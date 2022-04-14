@@ -67,8 +67,9 @@ let skuId = "13038669"//投票书籍id
             if(nowTime < activityList[j].endTime){
                 activityID = activityList[j].id;
                 console.log(`\n活动ID：`+ activityID);
-                for (let code of inviteCodes) {
+                for (let code of shareList) {
                     if (userName === code['user']) continue;
+                    $.shareUuid = code['code'];
                     await main();
                 }
             }else{
