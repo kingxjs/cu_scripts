@@ -25,7 +25,7 @@ let skuId = "13038669"//投票书籍id
     }
     $.shareUuid = '770c7fcd1f0d4565ab47329961149313';
     
-    shareList.push($.shareUuid)
+//     shareList.push($.shareUuid)
    
     Host = `lzdz1-isv.isvjcloud.com`;
     RefererOrgin = `https://lzdz1-isv.isvjcloud.com/dingzhi/jdbook/vote/activity?activityId=dzf4facfbeb00111ecac4f02001700&innerIndex=1&tttparams=f5jLMNUeyJncHNfYXJlYSI6IjFfNzJfNTU2NzBfMCIsInByc3RhdGUiOiIwIiwidW5fYXJlYSI6IjFfMjgxMF81NTU0MV8wIiwibW9kZWwiOiJpUGhvbmUxMSwyIiwiZ0xhdCI6IjM5Ljc0MDMwMSIsImdMbmciOiIxMTYuMzM1NzU0IiwibG5nIjoiMTE2LjQ2MzEwMyIsImxhdCI6IjM5Ljg5MDEzNS7J9&sid=d2c111da017cbc22bf37fef95348ec9w&un_area=1_2810_55541_0`;
@@ -47,7 +47,7 @@ let skuId = "13038669"//投票书籍id
                 activityID = activityList[j].id;
                 console.log(`\n活动ID：`+ activityID);
                 await main();
-                shareList.push($.shareUuid)
+                shareList.push({"user":userName,"code":actorUuid})
             }else{
                 console.log(`\n活动ID：${activityID},已过期`)
             }
@@ -60,11 +60,6 @@ let skuId = "13038669"//投票书籍id
         if(hotList.indexOf(userName) !== -1){
             continue;
         }
-        
-        if(shareList.length > 0){
-            $.shareUuid = getRandomArrayElements(shareList,1)[0];
-        }
-
         console.log(`\n*****开始【京东账号${index}】${userName}*****\n`);
         hotFlag = false;
         for (let j = 0; j < activityList.length && !hotFlag; j++) {
@@ -72,7 +67,10 @@ let skuId = "13038669"//投票书籍id
             if(nowTime < activityList[j].endTime){
                 activityID = activityList[j].id;
                 console.log(`\n活动ID：`+ activityID);
-                await main();
+                for (let code of inviteCodes) {
+                    if (userName === code['user']) continue;
+                    await main();
+                }
             }else{
                 console.log(`\n活动ID：${activityID},已过期`)
             }
@@ -130,7 +128,7 @@ async function main() {
         await takePostRequest('vote');
         await $.wait(3000);
     }
-    $.shareUuid = actorUuid;
+//     $.shareUuid = actorUuid;
     
     Referer = `${RefererOrgin}&shareUuid=${$.shareUuid}`;
 }
