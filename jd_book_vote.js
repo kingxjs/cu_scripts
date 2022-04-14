@@ -70,7 +70,8 @@ let skuId = "13038669"//投票书籍id
                 for (let code of shareList) {
                     if (userName === code['user']) continue;
                     $.shareUuid = code['code'];
-                    await main();
+                    await main(); 
+                    await $.wait(2000)
                 }
             }else{
                 console.log(`\n活动ID：${activityID},已过期`)
