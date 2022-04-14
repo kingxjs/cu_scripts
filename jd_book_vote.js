@@ -117,10 +117,12 @@ async function main() {
     console.log(`助力码：${actorUuid}`)
     await $.wait(1000);
     await takePostRequest('drawContent');
-    if ($.shareUuid && !shareNick) {
-        console.log(`去助力：${$.shareUuid}`);
-    } else if (shareNick)
+    
+    if (shareNick)
         console.log(`已助力：${shareNick}`)
+    if ($.shareUuid) {
+        console.log(`去助力：${$.shareUuid}`);
+    } 
         
     await $.wait(2000);
     var score = $.activityData.score || 0;
