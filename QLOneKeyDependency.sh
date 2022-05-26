@@ -35,6 +35,8 @@ npm install -g npm
 cd /ql/data
 npm install -g png-js
 cd /ql/data
+npm install -g moment
+cd /ql/data
 npm install -g date-fns
 cd /ql/data
 npm install -g axios
