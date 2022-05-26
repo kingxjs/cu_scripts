@@ -3,12 +3,12 @@
 ============Quantumultx===============
 [task_local]
 #极速版抢卷
-1 0 0,6,9,14,17,20 * * * https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js, tag=极速版抢卷, enabled=true
+1 0 0,10,16,20,22 * * * https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js, tag=极速版抢卷, enabled=true
 ================Loon==============
 [Script]
-cron "1 0 0,6,9,14,17,20 * * *" script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js,tag=极速版抢卷
+cron "1 0,10,16,20,22  * * *" script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js,tag=极速版抢卷
 ===============Surge=================
-极速版抢卷 = type=cron,cronexp="58 59 6,9,14,17,20 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js
+极速版抢卷 = type=cron,cronexp="0,10,16,20,22  * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js
 ============小火箭=========
 极速版抢卷 = type=cron,script-path=https://raw.githubusercontent.com/KingRan/KR/main/jd_19_6.js, cronexpr="58 59 6,9,14,17,20 * * *", timeout=3600, enable=true
  */
