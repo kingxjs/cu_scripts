@@ -15,7 +15,7 @@ if ($.isNode()) {
 } else {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-$.shareCode = "";
+$.shareCode = "sWAKB";
 CryptoScripts()
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
 !(async () => {
@@ -107,7 +107,7 @@ async function main() {
 function mainInfo() {
   return new Promise((resolve) => {
     let opts = {
-      url: `https://api.m.jd.com/api?functionId=shareUnionCoupon&appid=u&_=${Date.now()}&loginType=2&body=${encodeURIComponent(JSON.stringify({"unionActId":"31137","actId":$.actId,"platform":4,"unionShareId":$.shareCode,"d":$.code,"supportPic":2,"supportLuckyCode":0,"eid":"-1"}))}&client=apple&clientVersion=8.3.6`,
+      url: `https://api.m.jd.com/api?functionId=shareUnionCoupon&appid=u&_=${Date.now()}&loginType=2&body=${encodeURIComponent(JSON.stringify({"unionActId":"31142","actId":$.actId,"platform":4,"unionShareId":$.shareCode,"d":$.code,"supportPic":2,"supportLuckyCode":0,"eid":"-1"}))}&client=apple&clientVersion=8.3.6`,
       headers: {
         "Accept-Language": "zh-cn",
         "Accept-Encoding": "gzip, deflate, br",
@@ -181,7 +181,7 @@ function randomString(e) {
 
 async function getCoupons(shareCode = '', type = 1) {
   return new Promise((resolve) => {
-    let body = encodeURIComponent(JSON.stringify({"platform":4,"unionActId":"31137","actId":$.actId,"d":$.code,"unionShareId":shareCode,"type":type,"eid":"-1"}))
+    let body = encodeURIComponent(JSON.stringify({"platform":4,"unionActId":"31142","actId":$.actId,"d":$.code,"unionShareId":shareCode,"type":type,"eid":"-1"}))
     let t = [{"key":"appid","value":"u"},{"key":"body","value":$.CryptoJS.SHA256($.toStr(body,body)).toString()},{"key":"client","value":"apple"},{"key":"clientVersion","value":"8.3.6"},{"key":"functionId","value":"getCoupons"},{"key":"t","value":Date.now()}]
     let h5st = geth5st(t) || 'undefined'
     let opts = {
