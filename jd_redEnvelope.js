@@ -98,10 +98,10 @@ async function main() {
     // }
     await $.wait(2000);
   }
-//   if ($.index === 1 && !$.hotFlag) {
-//       await $.wait(2000)
-//       await mainInfo()
-//   }
+  if ($.index === 1 && !$.hotFlag) {
+      await $.wait(2000)
+      await mainInfo()
+  }
 }
 
 function mainInfo() {
