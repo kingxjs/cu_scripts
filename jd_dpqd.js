@@ -14,10 +14,6 @@ if (process.env.DPQDTK) {
         token = [...process.env.DPQDTK.split('&'), ...token]
     }
 }
-if (!token.length) {
-    console.log('无店铺签到token,不执行.需自备token:环境变DPQDTK: tk1&tk2.')
-    return
-}
 const $ = new Env('店铺签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -50,6 +46,11 @@ if ($.isNode()) {
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         return;
+    }
+    await getTokenJson();
+    if (!token.length) {
+        console.log('无店铺签到token,不执行.需自备token:环境变DPQDTK: tk1&tk2.')
+        return
     }
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
@@ -86,6 +87,7 @@ if ($.isNode()) {
 
 //开始店铺签到
 async function dpqd() {
+    var tks =[];
     for (var j = 0; j < token.length; j++) {
         num = j + 1
         $.shopReward = {};
@@ -336,6 +338,32 @@ async function showMsg() {
     }
 }
 
+function getTokenJson() {
+    console.info('获取远程token')
+    return new Promise(resolve => {
+        const options = {
+            url: `https://raw.fastgit.org/kingxjs/jd_dp_token/main/token.json`,
+        }
+        $.get(options, (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`\n${$.name}: API查询请求失败 ‼️‼️`)
+                    $.logErr(err);
+                } else {
+                    if(data){
+                        data = JSON.parse(data)
+                        token =[...token,...data]
+                        token = token.filter((item,index) => token.indexOf(item) === index );
+                    }
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve(data);
+            }
+        })
+    })
+}
 function TotalBean() {
     return new Promise(async resolve => {
         const options = {
