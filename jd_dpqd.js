@@ -354,8 +354,8 @@ function getTokenJson() {
                         data = JSON.parse(data)
                         token =[...token,...data]
                         token = token.filter((item,index) => token.indexOf(item) === index );
-                        if (token.length > 20) {
-                            token = token.slice(0, 20)
+                        if (token.length > 18) {
+                            token = token.slice(0, 18)
                         }
                     }
                 }
