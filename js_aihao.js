@@ -31,11 +31,13 @@ var hour = (new Date()).getHours();
         $.msg($.name, '请先获取爱好论坛cookie');
         return;
     }
+    var index = 1;
     for (let i = 0; i < cookiesArr.length; i++) {
         if (cookiesArr[i]) {
             cookie = cookiesArr[i];
+            result += `账号${index}：\n`
             await aihao();
-            result += '\n'
+            index += 1;
         }
     }
     showMsg();
