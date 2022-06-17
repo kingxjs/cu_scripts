@@ -316,7 +316,7 @@ function taskUrl(token, venderId) {
                             }
                         }
                         if (!result && !$.shopEveryday) {
-                            console.log(`，第${num}个可删除token了`)
+                            console.log(`，第${num}个可删除token了，${token}`)
                             message += `，第${num}个可删除`
                         }
                     }
