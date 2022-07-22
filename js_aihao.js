@@ -81,6 +81,8 @@ function aihao() {
                         msg = "当前时间段已经打过卡了嗷(๑°3°๑)";
                     } else if (res.data.match(/无法获得全勤奖励/)) {
                         msg = res.data.match(/无法获得全勤奖励！您本月打卡次数：\d+/);
+                    } else if (res.data.match(/请勿重复领取！/)) {
+                        msg = '已获得全勤奖励';
                     } else {
                         msg = "签到失败!原因未知";
                         console.log(res.data);
