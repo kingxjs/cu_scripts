@@ -206,10 +206,14 @@ cron 3 0 * * * jd_cfd_sc.js
   
   function uploadShareCode(code) {
     return new Promise(async resolve => {
+      var pin = $.md5($.UserName)
       var bean = await getBeanShareCode()
       var farm = await getFarmShareCode()
+    console.info("bean",bean)
+    console.info("farm",farm)
+    console.info("pin",pin
       
-      $.get({url: `https://api.jdsharecode.xyz/api/autoInsert/jxmc?sharecode=${code}&bean=${bean}&farm=${farm}&pin=${$.UserName}`, timeout: 30 * 1000}, (err, resp, data) => {
+      $.get({url: `https://api.jdsharecode.xyz/api/autoInsert/jxmc?sharecode=${code}&bean=${bean}&farm=${farm}&pin=${pin}`, timeout: 30 * 1000}, (err, resp, data) => {
         try {
           if (err) {
             console.log(JSON.stringify(err))
