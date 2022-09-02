@@ -172,7 +172,9 @@ function uploadShareCode(code) {
     var pin = $.md5($.UserName)
     var bean = await getBeanShareCode()
     var farm = await getFarmShareCode()
-    console.info(bean,farm,pin)
+    console.info("bean",bean)
+    console.info("farm",farm)
+    console.info("pin",pin)
     $.get({url: `https://api.jdsharecode.xyz/api/autoInsert/jxcfd?sharecode=${code}&bean=${bean}&farm=${farm}&pin=${pin}`, timeout: 30 * 1000}, (err, resp, data) => {
       try {
         if (err) {
