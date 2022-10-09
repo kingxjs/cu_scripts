@@ -49,6 +49,7 @@ async function showMsg() {
         await notify.sendNotify(`${$.name}`, result);
     }
 }
+
 function aihao() {
     return new Promise(async (resolve) => {
         try {
@@ -87,12 +88,35 @@ function aihao() {
                         msg = "签到失败!原因未知";
                         console.log(res.data);
                     }
+                    if(i == 1){
+                        newinvite()
+                    }
                 } else {
                     msg = "cookie已失效";
                 }
                 console.log(str[i - 1] + "：" + msg);
                 result += str[i - 1] + "：" + msg + "\n";
             }
+        } catch (err) {
+            console.log(err);
+        }
+        resolve(result);
+    });
+}
+
+function newinvite() {
+    return new Promise(async (resolve) => {
+        try {
+            console.log("爱好论坛获取邀请码...");
+            let header = { headers: { cookie: cookie } };
+            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=aea5eff3`;
+            var res = await axios.post(
+                "https://www.aihao.cc/home.php?mod=spacecp&ac=invite&appid=0&ref&inajax=1",
+                data,
+                header
+            );
+            console.log(res);
+            
         } catch (err) {
             console.log(err);
         }
