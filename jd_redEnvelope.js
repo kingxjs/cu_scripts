@@ -68,13 +68,12 @@ async function main() {
     }
   }
   $.code = flCode;
-  for (let i = 0; i < 10 && !$.max; i++) {
+  for (let i = 0; i < 5 && !$.max; i++) {
     $.newCookie = "";
     $.url1 = "";
     $.url2 = "";
     $.eid = "";
     await getInfo1();
-    console.info($.url1)
     if (!$.url1) {
       console.log(`${userName},初始化1失败,可能黑号`);
       $.hotFlag = true;
@@ -86,18 +85,18 @@ async function main() {
       $.hotFlag = true;
       break;
     }
-    console.info($.url2)
     $.actId = ($.url2.match(/mall\/active\/([^/]+)\/index\.html/) && $.url2.match(/mall\/active\/([^/]+)\/index\.html/)[1]) || "2ymJw5ginBqRefn1sfiXLm8Yo7Ln";
-    // let arr = getBody($.UA, $.url2);
-    // await getEid(arr);
+    let arr = getBody($.UA, $.url2);
+    await getEid(arr);
+    console.log(`$.eid:` + $.eid);
     console.log(`$.actId:` + $.actId);
-    // if ($.eid) {
+    if ($.eid) {
       if (i === 0 && $.shareCode) {
         await getCoupons($.shareCode);
       } else {
         await getCoupons("");
       }
-    // }
+    }
     await $.wait(2000);
   }
   if ($.index === 1 && !$.hotFlag) {
@@ -109,7 +108,7 @@ async function main() {
 function mainInfo() {
   return new Promise((resolve) => {
     let opts = {
-      url: `https://api.m.jd.com/api?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body=${encodeURIComponent(JSON.stringify({"unionActId":"31149","actId":$.actId,"platform":4,"unionShareId":$.shareCode,"d":$.code,"supportPic":2,"supportLuckyCode":0,"type":1,"eid":"-1"}))}&client=apple&clientVersion=8.3.6`,
+      url: `https://api.m.jd.com/api?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body=${encodeURIComponent(JSON.stringify({"unionActId":"31149","actId":$.actId,"platform":4,"unionShareId":$.shareCode,"d":$.code,"supportPic":2,"supportLuckyCode":0,"type":1,"eid":$.eid}))}&client=apple&clientVersion=8.3.6`,
       headers: {
         "Accept-Language": "zh-cn",
         "Accept-Encoding": "gzip, deflate, br",
