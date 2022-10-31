@@ -109,7 +109,7 @@ function newinvite() {
         try {
             console.log("爱好论坛获取邀请码...");
             let header = { headers: { cookie: cookie } };
-            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=aea5eff3`;
+            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=9a535abf`;
             var res = await axios.post(
                 "https://www.aihao.cc/home.php?mod=spacecp&ac=invite&appid=0&ref&inajax=1",
                 data,
