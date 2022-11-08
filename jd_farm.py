@@ -360,8 +360,6 @@ def get_cookies():
     return cookiesLists
 
 def run():
-    print(get_cookies())
-    return
     for cookies in get_cookies():
         result = postTemplate(cookies, 'initForFarm', {"version": 4})
         treeState = result["treeState"]
