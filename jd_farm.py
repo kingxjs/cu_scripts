@@ -16,12 +16,29 @@ import time
 import notify
 import os
 import re
+import ssl
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.poolmanager import PoolManager
+
+from Free_proxy_pool import proxy_pool
+
+
+class MyAdapter(HTTPAdapter):
+    def init_poolmanager(self, connections, maxsize, block=False):
+        self.poolmanager = PoolManager(num_pools=connections,
+                                       maxsize=maxsize,
+                                       block=block,
+                                       ssl_version=ssl.PROTOCOL_TLSv1)
+
+
+proxy = None
 
 waterTimesLimit = 20  # 自定义的每天浇水最大次数
 retainWaterLimit = 100  # 完成10次浇水任务的基础上,希望水滴始终高于此数
 waterFriendLimit = 2  # [0,2]   0: 始终不替他人浇水   2: 替他人浇水2次以完成任务获得25水
 
-shareCodes = ['c041cad170774d169fa2c6af2c9ff2b8','10e2fb8a50924e0d9f7d53e893397468','cdbe415367e842d79b665ae03aeac098']
+shareCodes = ['c041cad170774d169fa2c6af2c9ff2b8',
+              '10e2fb8a50924e0d9f7d53e893397468', 'cdbe415367e842d79b665ae03aeac098']
 
 
 def postTemplate(cookies, functionId, body):
@@ -38,8 +55,11 @@ def postTemplate(cookies, functionId, body):
         "appid": "wh5",
         "clientVersion": "9.1.0"
     }
-    response = requests.post(
-        'https://api.m.jd.com/client.action', headers=headers, cookies=cookies, data=data, params=params)
+    session = requests.Session()
+    session.mount('https://', MyAdapter())
+
+    response = session.post(
+        'https://api.m.jd.com/client.action', headers=headers, cookies=cookies, data=data, params=params, proxies=proxy)
     return response.json()
 
 
@@ -55,9 +75,10 @@ def getTemplate(cookies, functionId, body):
         ('body', json.dumps(body)),
         ('appid', 'wh5'),
     )
-
-    response = requests.get('https://api.m.jd.com/client.action',
-                            headers=headers, params=params, cookies=cookies)
+    session = requests.Session()
+    session.mount('https://', MyAdapter())
+    response = session.get('https://api.m.jd.com/client.action',
+                            headers=headers, params=params, cookies=cookies, proxies=proxy)
     return response.json()
 
 
@@ -197,7 +218,7 @@ def bag(cookies):
     print(f"""额外签到卡 {signCard}""")
     if signCard > 0:
         print("使用【额外签到卡】 ", postTemplate(
-            cookies, "userMyCardForFarm", {"cardType": "signCard","version": 6}))
+            cookies, "userMyCardForFarm", {"cardType": "signCard", "version": 6}))
 
 
 def takeTask(cookies):
@@ -344,8 +365,11 @@ def turnTable(cookies):
             cookies, "lotteryForTurntableFarm", {"type": 1}))  # 抽奖
         time.sleep(2)
 
+
 def get_cookies():
-    secret = os.environ["JD_COOKIE"]
+    # secret = os.environ["JD_COOKIE"]
+    secret= "pt_key=AAJjSXstADBYfMf9k5zuHRqdv7Qh0sgqB-kbZOAtw9l-078sYblAtH0GyVHEHgSZxPHezP-H59U;  pt_pin=king%E5%AD%A6%E4%BD%B3;&pt_key=AAJjSXxGADBM3Nc8qWCJwOQnprCaPnSJ2zIgI37XBsfTTtZOXJdFF4ZKoVJH9uiP1zXs4WbkQw8; pt_pin=kingxjbei;&pt_key=AAJjUfS5ADDysTT5oL5P0StxJBvlC9zs40Q2oWwUwdwcXdeKfHAdRG15lxtso8r9CG5zsYsBvBg; pt_pin=jd_dTxmQzOLolGc;"
+
     cookiesLists = []  # 重置cookiesList
     if '&' in secret:
         for line in secret.split('&'):
@@ -359,7 +383,12 @@ def get_cookies():
             cookiesLists.append({"pt_pin": pt_pin, "pt_key": pt_key})
     return cookiesLists
 
+
 def run():
+    global proxy
+
+    proxy = proxy_pool.Free_proxy_pool().get_a_proxy()
+
     for cookies in get_cookies():
         result = postTemplate(cookies, 'initForFarm', {"version": 4})
         treeState = result["treeState"]
@@ -369,7 +398,7 @@ def run():
         if treeState in [2, 3]:
             print("可以兑换了")
             notify.send("东东农场",
-                f"""东东农场可兑换【{cookies["pt_pin"]}】""", f"""东东农场 账号【{cookies["pt_pin"]}】 可以兑换了""")
+                        f"""东东农场可兑换【{cookies["pt_pin"]}】""", f"""东东农场 账号【{cookies["pt_pin"]}】 可以兑换了""")
             continue
         nickName = result["farmUserPro"]["nickName"]
         myshareCode = result["farmUserPro"]["shareCode"]
