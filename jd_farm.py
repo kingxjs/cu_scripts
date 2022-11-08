@@ -1,20 +1,21 @@
+
+'''
+cron: 45 6,11,17,23 * * *
+东东农场
+new Env('东东农场py')
+1、shareCode 为自己的助力码，但是需要别人为自己助力
+2、waterTimesLimit 自定义的每天浇水最大次数
+3、retainWaterLimit 完成10次浇水任务的基础上,希望水滴始终高于此数;优先级高于waterTimesLimit
+4、水滴高于100时,默认使用翻倍卡;其他情况不使用道具
+
+'''
+
 import jdCookie
 import json
 import requests
 import time
 import notify
 
-"""
-东东农场
-new Env('东东农场py')
-45 6,11,17,23 * * * jd_farm.py
-
-1、shareCode 为自己的助力码，但是需要别人为自己助力
-2、waterTimesLimit 自定义的每天浇水最大次数
-3、retainWaterLimit 完成10次浇水任务的基础上,希望水滴始终高于此数;优先级高于waterTimesLimit
-4、水滴高于100时,默认使用翻倍卡;其他情况不使用道具
-
-"""
 waterTimesLimit = 20  # 自定义的每天浇水最大次数
 retainWaterLimit = 100  # 完成10次浇水任务的基础上,希望水滴始终高于此数
 waterFriendLimit = 2  # [0,2]   0: 始终不替他人浇水   2: 替他人浇水2次以完成任务获得25水
