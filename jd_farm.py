@@ -349,17 +349,19 @@ def get_cookies():
     cookiesLists = []  # 重置cookiesList
     if '&' in secret:
         for line in secret.split('&'):
-            pt_pin = re.findall(r'pt_pin=(.*?)&', line)[0]
-            pt_key = re.findall(r'pt_key=(.*?)$', line)[0]
+            pt_pin = re.findall(r'pt_pin=([^; ]+)(?=;?)', line)[0]
+            pt_key = re.findall(r'pt_key=([^; ]+)(?=;?)', line)[0]
             cookiesLists.append({"pt_pin": pt_pin, "pt_key": pt_key})
     else:
         for line in secret.split('\n'):
-            pt_pin = re.findall(r'pt_pin=(.*?)&', line)[0]
-            pt_key = re.findall(r'pt_key=(.*?)$', line)[0]
+            pt_pin = re.findall(r'pt_pin=([^; ]+)(?=;?)', line)[0]
+            pt_key = re.findall(r'pt_key=([^; ]+)(?=;?)', line)[0]
             cookiesLists.append({"pt_pin": pt_pin, "pt_key": pt_key})
     return cookiesLists
 
 def run():
+    print(get_cookies())
+    return
     for cookies in get_cookies():
         result = postTemplate(cookies, 'initForFarm', {"version": 4})
         treeState = result["treeState"]
