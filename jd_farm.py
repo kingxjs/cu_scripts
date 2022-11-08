@@ -10,11 +10,12 @@ new Env('东东农场py')
 
 '''
 
-import jdCookie
 import json
 import requests
 import time
 import notify
+import os
+import re
 
 waterTimesLimit = 20  # 自定义的每天浇水最大次数
 retainWaterLimit = 100  # 完成10次浇水任务的基础上,希望水滴始终高于此数
@@ -343,9 +344,23 @@ def turnTable(cookies):
             cookies, "lotteryForTurntableFarm", {"type": 1}))  # 抽奖
         time.sleep(2)
 
+def get_cookies():
+    secret = os.environ["JD_COOKIE"]
+    cookiesLists = []  # 重置cookiesList
+    if '&' in secret:
+        for line in secret.split('&'):
+            pt_pin = re.findall(r'pt_pin=(.*?)&', line)[0]
+            pt_key = re.findall(r'pt_key=(.*?)$', line)[0]
+            cookiesLists.append({"pt_pin": pt_pin, "pt_key": pt_key})
+    else:
+        for line in secret.split('\n'):
+            pt_pin = re.findall(r'pt_pin=(.*?)&', line)[0]
+            pt_key = re.findall(r'pt_key=(.*?)$', line)[0]
+            cookiesLists.append({"pt_pin": pt_pin, "pt_key": pt_key})
+    return cookiesLists
 
 def run():
-    for cookies in jdCookie.get_cookies():
+    for cookies in get_cookies():
         result = postTemplate(cookies, 'initForFarm', {"version": 4})
         treeState = result["treeState"]
         if treeState == 0:
