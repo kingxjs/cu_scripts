@@ -105,7 +105,6 @@ function aihao() {
         resolve(result);
     });
 }
-
 function get_formhash() {
     return new Promise(async (resolve) => {
         try {
