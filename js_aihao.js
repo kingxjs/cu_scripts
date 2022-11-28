@@ -9,7 +9,6 @@ const axios = require("axios");
 const iconv = require('iconv-lite');
 let cookie = '', cookiesArr = [], result = '';
 var hour = (new Date()).getHours();
-process.env.AH_COOKIE = 'AID=40276386771638235394; 95hf_2132_saltkey=IowhnNb9; 95hf_2132_lastvisit=1669444218; 95hf_2132_sid=xddH0D; 95hf_2132_sendmail=1; 95hf_2132_seccodecSxddH0D=160.107d835f952b419674; 95hf_2132_ulastactivity=80efVCYRGMH38LvbKF6Sq4YNYsoAkfCF2+XdgfMuZSAbaUfv0w/5; 95hf_2132_auth=e810dW6cOzirfNG6dHV3lyK2M9Sz6N/T7Swya6HVPhurjk+RK+jo4U5mRP4QBwYicgcUSVfANiPpOIg2UMo8tIrKOg; 95hf_2132_lastcheckfeed=29333|1669447827; 95hf_2132_checkfollow=1; 95hf_2132_lip=111.193.54.168,1669447818; 95hf_2132_connect_is_bind=0; 95hf_2132_onlineusernum=816; 95hf_2132_lastact=1669447829	home.php	spacecp; 95hf_2132_checkpm=1; 95hf_2132_noticeTitle=1'
 !(async () => {
     let AHCookie = []
     if (process.env.AH_COOKIE && process.env.AH_COOKIE.indexOf('@') > -1) {
