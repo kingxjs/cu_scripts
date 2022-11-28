@@ -6,8 +6,10 @@ cron "30 8,13,18 * * *" script-path=js_aihao.js
 const $ = new Env('爱好论坛签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const axios = require("axios");
+const iconv = require('iconv-lite');
 let cookie = '', cookiesArr = [], result = '';
 var hour = (new Date()).getHours();
+process.env.AH_COOKIE = 'AID=40276386771638235394; 95hf_2132_saltkey=IowhnNb9; 95hf_2132_lastvisit=1669444218; 95hf_2132_sid=xddH0D; 95hf_2132_sendmail=1; 95hf_2132_seccodecSxddH0D=160.107d835f952b419674; 95hf_2132_ulastactivity=80efVCYRGMH38LvbKF6Sq4YNYsoAkfCF2+XdgfMuZSAbaUfv0w/5; 95hf_2132_auth=e810dW6cOzirfNG6dHV3lyK2M9Sz6N/T7Swya6HVPhurjk+RK+jo4U5mRP4QBwYicgcUSVfANiPpOIg2UMo8tIrKOg; 95hf_2132_lastcheckfeed=29333|1669447827; 95hf_2132_checkfollow=1; 95hf_2132_lip=111.193.54.168,1669447818; 95hf_2132_connect_is_bind=0; 95hf_2132_onlineusernum=816; 95hf_2132_lastact=1669447829	home.php	spacecp; 95hf_2132_checkpm=1; 95hf_2132_noticeTitle=1'
 !(async () => {
     let AHCookie = []
     if (process.env.AH_COOKIE && process.env.AH_COOKIE.indexOf('@') > -1) {
@@ -88,7 +90,7 @@ function aihao() {
                         msg = "签到失败!原因未知";
                         console.log(res.data);
                     }
-                    if(i == 1){
+                    if (i == 1) {
                         newinvite()
                     }
                 } else {
@@ -103,20 +105,44 @@ function aihao() {
         resolve(result);
     });
 }
+function get_formhash() {
+    return new Promise(async (resolve) => {
+        try {
+            console.log("获取 formhash");
+            var res = await axios.get("https://www.aihao.cc/home.php?mod=spacecp&ac=invite", {
 
+                headers: {
+                    cookie: cookie,
+                    // "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                    // "Accept-Encoding": "gzip, deflate, br",
+                    // "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+                },
+                responseType: "arraybuffer", // 关键步骤
+                // responseEncoding: "utf8",
+            });
+            var str = iconv.decode(Buffer.from(res.data), 'utf8');
+            var html = iconv.encode(str, 'utf8').toString();
+            console.log(html)
+
+        } catch (err) {
+            console.log(err);
+        }
+        resolve(result);
+    });
+}
 function newinvite() {
     return new Promise(async (resolve) => {
         try {
             console.log("爱好论坛获取邀请码...");
             let header = { headers: { cookie: cookie } };
-            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=9a535abf`;
+            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=0c491973`;
             var res = await axios.post(
                 "https://www.aihao.cc/home.php?mod=spacecp&ac=invite&appid=0&ref&inajax=1",
                 data,
                 header
             );
             console.log(res);
-            
+
         } catch (err) {
             console.log(err);
         }
