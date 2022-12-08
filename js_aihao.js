@@ -6,7 +6,7 @@ cron "30 8,13,18 * * *" script-path=js_aihao.js
 const $ = new Env('爱好论坛签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 const axios = require("axios");
-const iconv = require('iconv-lite');
+// const iconv = require('iconv-lite');
 let cookie = '', cookiesArr = [], result = '';
 var hour = (new Date()).getHours();
 !(async () => {
@@ -104,37 +104,37 @@ function aihao() {
         resolve(result);
     });
 }
-function get_formhash() {
-    return new Promise(async (resolve) => {
-        try {
-            console.log("获取 formhash");
-            var res = await axios.get("https://www.aihao.cc/home.php?mod=spacecp&ac=invite", {
+// function get_formhash() {
+//     return new Promise(async (resolve) => {
+//         try {
+//             console.log("获取 formhash");
+//             var res = await axios.get("https://www.aihao.cc/home.php?mod=spacecp&ac=invite", {
 
-                headers: {
-                    cookie: cookie,
-                    // "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-                    // "Accept-Encoding": "gzip, deflate, br",
-                    // "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-                },
-                responseType: "arraybuffer", // 关键步骤
-                // responseEncoding: "utf8",
-            });
-            var str = iconv.decode(Buffer.from(res.data), 'utf8');
-            var html = iconv.encode(str, 'utf8').toString();
-            console.log(html)
+//                 headers: {
+//                     cookie: cookie,
+//                     // "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+//                     // "Accept-Encoding": "gzip, deflate, br",
+//                     // "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+//                 },
+//                 responseType: "arraybuffer", // 关键步骤
+//                 // responseEncoding: "utf8",
+//             });
+//             var str = iconv.decode(Buffer.from(res.data), 'utf8');
+//             var html = iconv.encode(str, 'utf8').toString();
+//             console.log(html)
 
-        } catch (err) {
-            console.log(err);
-        }
-        resolve(result);
-    });
-}
+//         } catch (err) {
+//             console.log(err);
+//         }
+//         resolve(result);
+//     });
+// }
 function newinvite() {
     return new Promise(async (resolve) => {
         try {
             console.log("爱好论坛获取邀请码...");
             let header = { headers: { cookie: cookie } };
-            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=0c491973`;
+            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=8f9aa2ae`;
             var res = await axios.post(
                 "https://www.aihao.cc/home.php?mod=spacecp&ac=invite&appid=0&ref&inajax=1",
                 data,
