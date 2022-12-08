@@ -5,10 +5,9 @@ cron "30 8,13,18 * * *" script-path=js_aihao.js
  */
 const $ = new Env('爱好论坛签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
-const axios = require("axios");
-// const iconv = require('iconv-lite');
 let cookie = '', cookiesArr = [], result = '';
 var hour = (new Date()).getHours();
+var day = (new Date()).getDate();
 !(async () => {
     let AHCookie = []
     if (process.env.AH_COOKIE && process.env.AH_COOKIE.indexOf('@') > -1) {
@@ -58,42 +57,23 @@ function aihao() {
             let header = { headers: { cookie: cookie } };
             for (i of [1, 2, 3, 4]) {
                 str = ["上午打卡", "下午打卡", "晚上打卡", "全勤奖励"];
-                if (i == 1 && (hour < 8 || hour > 9)) {
+                if (i == 1 && hour != 8) {
                     console.log(str[i - 1], '：跳过')
                     continue;
-                } else if (i == 2 && (hour < 13 || hour > 14)) {
+                } else if (i == 2 && hour != 13) {
                     console.log(str[i - 1], '：跳过')
                     continue;
-                } else if (i == 3 && (hour < 18 || hour > 19)) {
+                } else if (i == 3 && hour != 18) {
                     console.log(str[i - 1], '：跳过')
+                    continue;
+                } else if (i == 4 && day != 28) {
+                    console.log(str[i - 1], '：本月28号领取')
                     continue;
                 }
                 data = `button${i}=`;
-                res = await axios.post(
-                    "https://www.aihao.cc/plugin.php?id=daka",
-                    data,
-                    header
-                );
-                if (!res.data.match(/请先登录后才能继续使用/)) {
-                    if (res.data.match(/未到打卡时间|您本月还未打卡|已过打卡时间/)) {
-                        msg = "还没到打卡时间呢亲_(:D)∠)_";
-                    } else if (res.data.match(/打卡成功/)) {
-                        msg = res.data.match(/打卡成功！奖励金钱：\d+/);
-                    } else if (res.data.match(/请勿重复打卡/)) {
-                        msg = "当前时间段已经打过卡了嗷(๑°3°๑)";
-                    } else if (res.data.match(/无法获得全勤奖励/)) {
-                        msg = res.data.match(/无法获得全勤奖励！您本月打卡次数：\d+/);
-                    } else if (res.data.match(/请勿重复领取！/)) {
-                        msg = '已获得全勤奖励';
-                    } else {
-                        msg = "签到失败!原因未知";
-                        console.log(res.data);
-                    }
-                    if (i == 1) {
-                        newinvite()
-                    }
-                } else {
-                    msg = "cookie已失效";
+                var msg = await daka(data);
+                if (i == 1) {
+                    await newinvite();
                 }
                 console.log(str[i - 1] + "：" + msg);
                 result += str[i - 1] + "：" + msg + "\n";
@@ -104,43 +84,122 @@ function aihao() {
         resolve(result);
     });
 }
-// function get_formhash() {
-//     return new Promise(async (resolve) => {
-//         try {
-//             console.log("获取 formhash");
-//             var res = await axios.get("https://www.aihao.cc/home.php?mod=spacecp&ac=invite", {
+function daka(data) {
+    return new Promise(async (resolve) => {
+        try {
+            var options = {
+                url: `https://www.aihao.cc/plugin.php?id=daka`,
+                body: data,
+                headers: {
+                    'Cookie': cookie,
+                }
+            }
+            $.post(options, (err, resp, data) => {
+                var msg = '签到失败!原因未知';
+                try {
+                    if (err) {
+                        console.log(JSON.stringify(err))
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    } else {
+                        if (data) {
+                            if (!data.match(/请先登录后才能继续使用/)) {
+                                if (data.match(/未到打卡时间|您本月还未打卡|已过打卡时间/)) {
+                                    msg = "还没到打卡时间呢亲_(:D)∠)_";
+                                } else if (data.match(/打卡成功/)) {
+                                    msg = data.match(/打卡成功！奖励金钱：\d+/);
+                                } else if (data.match(/请勿重复打卡/)) {
+                                    msg = "当前时间段已经打过卡了嗷(๑°3°๑)";
+                                } else if (data.match(/无法获得全勤奖励/)) {
+                                    msg = data.match(/无法获得全勤奖励！您本月打卡次数：\d+/);
+                                } else if (data.match(/请勿重复领取！/)) {
+                                    msg = '已获得全勤奖励';
+                                } else {
+                                    msg = "签到失败!原因未知";
+                                    console.log(data);
+                                }
+                            } else {
+                                msg = "cookie已失效";
+                            }
+                        }
+                    }
+                } catch (e) {
+                    $.logErr(e, resp)
+                } finally {
+                    resolve(msg);
+                }
+            })
 
-//                 headers: {
-//                     cookie: cookie,
-//                     // "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-//                     // "Accept-Encoding": "gzip, deflate, br",
-//                     // "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-//                 },
-//                 responseType: "arraybuffer", // 关键步骤
-//                 // responseEncoding: "utf8",
-//             });
-//             var str = iconv.decode(Buffer.from(res.data), 'utf8');
-//             var html = iconv.encode(str, 'utf8').toString();
-//             console.log(html)
+        } catch (err) {
+            console.log(err);
+        }
+    });
+}
+function get_formhash() {
+    return new Promise(async (resolve) => {
+        try {
+            console.log("获取 formhash");
+            const options = {
+                url: 'https://www.aihao.cc/home.php?mod=spacecp&ac=invite',
+                headers: {
+                    "Cookie": cookie,
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 Edg/107.0.1418.62",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+                    "Accept-Encoding": "gzip, deflate, br",
+                    "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+                    "Host": "www.aihao.cc",
+                },
+                timeout: 10000
+            }
+            $.get(options, (err, resp, data) => {
+                try {
+                    if (err) {
+                        console.log(JSON.stringify(err))
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    } else {
+                        if (data) {
+                            var inputHtml = data.match(/<input[^>]*(?:id|name)="formhash"[^>]*>/)[0];
+                            data = (/value=['"]([^'"]*?)['"]/ig.exec(inputHtml) || ['', ''])[1];
+                        }
+                    }
+                } catch (e) {
+                    $.logErr(e, resp)
+                } finally {
+                    resolve(data);
+                }
+            })
 
-//         } catch (err) {
-//             console.log(err);
-//         }
-//         resolve(result);
-//     });
-// }
+        } catch (err) {
+            console.log(err);
+        }
+    });
+}
 function newinvite() {
     return new Promise(async (resolve) => {
         try {
             console.log("爱好论坛获取邀请码...");
-            let header = { headers: { cookie: cookie } };
-            var data = `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=8f9aa2ae`;
-            var res = await axios.post(
-                "https://www.aihao.cc/home.php?mod=spacecp&ac=invite&appid=0&ref&inajax=1",
-                data,
-                header
-            );
-            console.log(res);
+            var options = {
+                url: `https://www.aihao.cc/home.php?mod=spacecp&ac=invite&appid=0&ref&inajax=1`,
+                body: `invitenum=1&handlekey=newinvite&invitesubmit=true&formhash=${await get_formhash()}`,
+                headers: {
+                    'Cookie': cookie,
+                }
+            }
+            $.post(options, (err, resp, data) => {
+                try {
+                    if (err) {
+                        console.log(JSON.stringify(err))
+                        console.log(`${$.name} API请求失败，请检查网路重试`)
+                    } else {
+                        if (data) {
+                            console.info(data)
+                        }
+                    }
+                } catch (e) {
+                    $.logErr(e, resp)
+                } finally {
+                    resolve(data);
+                }
+            })
 
         } catch (err) {
             console.log(err);
