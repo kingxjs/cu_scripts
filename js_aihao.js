@@ -195,7 +195,8 @@ function newinvite() {
                         console.log(`${$.name} API请求失败，请检查网路重试`)
                     } else {
                         if (data) {
-                            if (!data.match(/操作成功/)) {
+                            console.info(data)
+                            if (data.match(/操作成功/)) {
                                 msg = "获取成功";
                             } else {
                                 msg = "获取失败";
