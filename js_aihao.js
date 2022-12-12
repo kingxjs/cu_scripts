@@ -40,6 +40,7 @@ var day = (new Date()).getDate();
             index += 1;
         }
     }
+    console.log('\n\n发送通知');
     showMsg();
 
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); });
@@ -72,11 +73,13 @@ function aihao() {
                 }
                 data = `button${i}=`;
                 var msg = await daka(data);
-                if (i == 1) {
-                    await newinvite();
-                }
                 console.log(str[i - 1] + "：" + msg);
                 result += str[i - 1] + "：" + msg + "\n";
+                if (i == 1) {
+                    msg = await newinvite();
+                    console.log("邀请码：" + msg);
+                    result += "邀请码：" + msg + "\n";
+                }
             }
         } catch (err) {
             console.log(err);
@@ -185,26 +188,31 @@ function newinvite() {
                 }
             }
             $.post(options, (err, resp, data) => {
+                var msg = '';
                 try {
                     if (err) {
                         console.log(JSON.stringify(err))
                         console.log(`${$.name} API请求失败，请检查网路重试`)
                     } else {
                         if (data) {
-                            console.info(data)
+                            if (!data.match(/操作成功/)) {
+                                msg = "获取成功";
+                            } else {
+                                msg = "获取失败";
+                            }
                         }
                     }
                 } catch (e) {
                     $.logErr(e, resp)
                 } finally {
-                    resolve(data);
+                    resolve(msg);
                 }
             })
 
         } catch (err) {
+            resolve("获取失败");
             console.log(err);
         }
-        resolve(result);
     });
 }
 // prettier-ignore
