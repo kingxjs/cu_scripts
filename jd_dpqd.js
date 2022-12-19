@@ -342,7 +342,7 @@ function getTokenJson() {
     console.info('获取远程token')
     return new Promise(resolve => {
         const options = {
-            url: `https://raw.fastgit.org/kingxjs/jd_dp_token/main/token.json`,
+            url: `https://ghproxy.com/https://raw.githubusercontent.com/kingxjs/jd_dp_token/main/token.json`,
         }
         $.get(options, (err, resp, data) => {
             try {
