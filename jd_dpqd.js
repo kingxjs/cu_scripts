@@ -357,6 +357,7 @@ function getTokenJson() {
                         if (token.length > 18) {
                             token = token.slice(0, 18)
                         }
+                        console.info(token)
                     }
                 }
             } catch (e) {
