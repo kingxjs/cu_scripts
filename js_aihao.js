@@ -8,7 +8,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 let cookie = '', cookiesArr = [], result = '';
 var hour = (new Date()).getHours();
 var day = (new Date()).getDate();
-var invite = process.env.AH_INVITE || false;
+var AH_INVITE = process.env.AH_INVITE || false;
 !(async () => {
     let AHCookie = []
     if (process.env.AH_COOKIE && process.env.AH_COOKIE.indexOf('@') > -1) {
@@ -76,7 +76,7 @@ function aihao() {
                 var msg = await daka(data);
                 console.log(str[i - 1] + "：" + msg);
                 result += str[i - 1] + "：" + msg + "\n";
-                if (i == 1 && invite) {
+                if (i == 1 && AH_INVITE) {
                     msg = await newinvite();
                     console.log("邀请码：" + msg);
                     result += "邀请码：" + msg + "\n";
