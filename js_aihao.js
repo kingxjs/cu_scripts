@@ -9,7 +9,6 @@ let cookie = '', cookiesArr = [], result = '';
 var hour = (new Date()).getHours();
 var day = (new Date()).getDate();
 var invite = process.env.AH_INVITE || false;
-
 !(async () => {
     let AHCookie = []
     if (process.env.AH_COOKIE && process.env.AH_COOKIE.indexOf('@') > -1) {
