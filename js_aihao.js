@@ -85,6 +85,7 @@ function aihao() {
         } catch (err) {
             console.log(err);
         }
+        
         resolve(result);
     });
 }
