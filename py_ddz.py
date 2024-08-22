@@ -9,7 +9,7 @@ ck格式：备注#cookie#提现金额（元）#wxpusher的apptoken#主题id#提�
 const $ = new Env("点点赚");
 点点赚
 [Script]
-cron "5 9-19/2 * * *" script-path=zq_Adv_video.js,tag=点点赚
+cron "5 9-19/2 * * *"
 
 """
 import hashlib
