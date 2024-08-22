@@ -35,13 +35,16 @@ def push(appToken, topicId, title, link, text, type):
     """
 
     datapust = {
-        "appToken": appToken,
         "content": f"""<body onload="window.location.href='{link}'">出现检测文章！！！\n<a style='padding:10px;color:red;font-size:20px;' href='{link}'>点击我打开待检测文章</a>\n请尽快点击链接完成阅读\n备注：{text}</body>""",
         "summary": title or "阅读过检测",
         "contentType": 2,
         "topicIds": [topicId],
         "url": link,
     }
+    if "UID_" in appToken:
+        datapust["uid"] = appToken
+    else:
+        datapust["appToken"] = appToken
     #print(datapust)
     urlpush = "http://wxpusher.zjiecode.com/api/send/message"
     try:
