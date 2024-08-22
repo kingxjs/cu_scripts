@@ -4,6 +4,13 @@ ck格式：备注#cookie#提现金额（元）#wxpusher的apptoken#主题id#提�
 
 提现说明：
 提现功能不再可用，请自行提现。。。
+
+
+const $ = new Env("点点赚");
+点点赚
+[Script]
+cron "5 9-19/2 * * *" script-path=zq_Adv_video.js,tag=点点赚
+
 """
 import hashlib
 import json
