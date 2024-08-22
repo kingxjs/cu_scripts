@@ -557,7 +557,7 @@ if __name__ == "__main__":
 
             try:
                 # 实例化并执行任务
-                if (cg["appToken"].startswith("AT_") == False) or (cg["topicId"].isdigit() == False):
+                if (cg["appToken"].startswith("UID_") == False) and ((cg["appToken"].startswith("AT_") == False) or (cg["topicId"].isdigit() == False)):
                     print(f"账号[{account.split('#')[0]}][{i}] wxpush 配置错误！")
                     continue
                 api = Main(cg)
