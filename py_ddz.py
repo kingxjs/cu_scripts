@@ -25,7 +25,7 @@ import urllib3
 from urllib.parse import parse_qs, urlsplit
 requests.packages.urllib3.disable_warnings()
 
-def push(appToken, topicId, title, link, text, type):
+def push(appToken, pushUid, topicId, title, link, text, type):
     """
     推送文章到微信
 
@@ -42,16 +42,13 @@ def push(appToken, topicId, title, link, text, type):
     """
 
     datapust = {
+        "appToken":appToken,
+        "uids":[pushUid],
         "content": f"""<body onload="window.location.href='{link}'">出现检测文章！！！\n<a style='padding:10px;color:red;font-size:20px;' href='{link}'>点击我打开待检测文章</a>\n请尽快点击链接完成阅读\n备注：{text}</body>""",
         "summary": title or "阅读过检测",
         "contentType": 2,
-        "topicIds": [topicId],
         "url": link,
     }
-    if "UID_" in appToken:
-        datapust["uid"] = appToken
-    else:
-        datapust["appToken"] = appToken
     #print(datapust)
     urlpush = "http://wxpusher.zjiecode.com/api/send/message"
     try:
@@ -91,6 +88,7 @@ class Main:
         self.txbz = cg["txbz"]
         self.topicId = cg["topicId"]
         self.appToken = cg["appToken"]
+        self.pushUid = cg["pushUid"]
         self.aliAccount = cg["aliAccount"]
         self.aliName = cg["aliName"]
         self.name = cg["name"]
@@ -283,6 +281,7 @@ class Main:
                     print(f"⚠️ 账号[{self.name}]检测到疑似检测文章，正在推送，等待过检测，等待时间：{sleepTime}秒。。。")
                     push(
                         self.appToken,
+                        self.pushUid,
                         self.topicId,
                         "点点赞阅读过检测",
                         wechatPostLink,
@@ -450,7 +449,7 @@ class Main:
         }
         try:
             r = requests.get(
-                "http://sx.shuxiangby.cn/index/mob/auth2.html?cos=1&pid=139715&code=061XYHll2xob7d4lrbml23bJZB1XYHlM&state=STATE",
+                "http://sx.shuxiangby.cn/index/mob/auth2.html?cos=1&pid=139715&code=bb1966b752c81ea54292de8385e5479e&state=STATE",
                 verify=False,
             )
 
@@ -459,7 +458,7 @@ class Main:
                     url = resp.headers["Location"]
                     self.domnainHost = urlparse(url).hostname
                             
-            #print(f"账号[{self.name}]提取到的域名：{self.domnainHost}")
+            print(f"账号[{self.name}]提取到的域名：{self.domnainHost}")
 
             for i in range(3):
                 r = requests.get(
@@ -504,6 +503,7 @@ class Main:
 if __name__ == "__main__":
     # 从环境变量中获取账号信息
     accounts = os.getenv("ddzyd")
+    appToken = os.getenv("WP_APP_TOKEN_ONE")
     wx_cloud = os.getenv("wx_cloud")
     use_tx = False
     wx_list = ""
@@ -533,7 +533,8 @@ if __name__ == "__main__":
                 "name": values[0]+"]"+"["+str(i),
                 "cookie": values[1],
                 "txbz": values[2],
-                "appToken": values[3],
+                "appToken": appToken,
+                "pushUid": values[3],
                 "topicId": values[4],
                 "aliName": values[5],
                 "aliAccount": values[6],
@@ -554,7 +555,8 @@ if __name__ == "__main__":
                 "name": values[0]+"]"+"["+str(i),
                 "cookie": values[1],
                 "txbz": values[2],
-                "appToken": values[3],
+                "appToken": appToken,
+                "pushUid": values[3],
                 "topicId": values[4],
                 "aliName": values[5],
                 "aliAccount": values[6],
@@ -564,7 +566,7 @@ if __name__ == "__main__":
 
             try:
                 # 实例化并执行任务
-                if (cg["appToken"].startswith("UID_") == False) and ((cg["appToken"].startswith("AT_") == False) or (cg["topicId"].isdigit() == False)):
+                if (cg["pushUid"].startswith("UID_") == False) and ((cg["appToken"].startswith("AT_") == False) or (cg["topicId"].isdigit() == False)):
                     print(f"账号[{account.split('#')[0]}][{i}] wxpush 配置错误！")
                     continue
                 api = Main(cg)
