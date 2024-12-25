@@ -1,3 +1,10 @@
+# -- coding: utf-8 --
+"""
+const $ = new Env("serv00 保号");
+serv00 保号
+[Script]
+cron "0 0 10 ? * MON/14" script-path=serv00_login.py,tag=serv00 保号
+"""
 import os
 import paramiko
 import json
