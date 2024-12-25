@@ -103,7 +103,7 @@ async def main():
         await delay_time(delay)
         
     message += f"🔚脚本结束，如有异常点击下方按钮👇"
-    await send("serv00 保号",message)
+    send("serv00 保号",message)
     print(f'所有{serviceName}账号登录完成！')
     # 退出时关闭浏览器
     await shutdown_browser()
