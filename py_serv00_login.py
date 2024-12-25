@@ -7,7 +7,6 @@ cron "0 0 10 ? * MON/14" script-path=serv00_login.py,tag=serv00 保号
 """
 
 import json
-import asyncio
 from pyppeteer import launch
 from datetime import datetime, timedelta
 import aiofiles
@@ -18,9 +17,6 @@ from notify import send
 
 def format_to_iso(date):
     return date.strftime('%Y-%m-%d %H:%M:%S')
-
-async def delay_time(ms):
-    await asyncio.sleep(ms / 1000)
 
 # 全局浏览器实例
 browser = None
@@ -100,7 +96,7 @@ async def main():
             print(f"{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。")
 
         delay = random.randint(1000, 8000)
-        await delay_time(delay)
+        time.sleep(delay)
         
     message += f"🔚脚本结束，如有异常点击下方按钮👇"
     await send("serv00 保号",message)
@@ -109,4 +105,4 @@ async def main():
     await shutdown_browser()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
