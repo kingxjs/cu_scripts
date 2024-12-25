@@ -7,61 +7,61 @@ cron "0 0 10 ? * MON/14" script-path=serv00_login.py,tag=serv00 保号
 """
 
 import json
-import asyncio
-from pyppeteer import launch
+import time
 from datetime import datetime, timedelta
-import aiofiles
 import random
-import requests
 import os
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from notify import send
-os.environ['PYPPETEER_DOWNLOAD_HOST'] = "https://npmmirror.com/mirrors"
 
-def format_to_iso(date):
-    return date.strftime('%Y-%m-%d %H:%M:%S')
-
-async def delay_time(ms):
-    await asyncio.sleep(ms / 1000)
-
-# 全局浏览器实例
-browser = None
+# 配置Chrome选项
+chrome_options = Options()
+chrome_options.headless = False
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument(
+    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+)
 
 # 消息
 message = ""
 
-async def login(username, password, panelnum):
-    global browser
+def format_to_iso(date):
+    return date.strftime('%Y-%m-%d %H:%M:%S')
 
-    page = None  # 确保 page 在任何情况下都被定义
+def login(username, password, panelnum):
     serviceName = 'ct8' if 'ct8' in panelnum else 'serv00'
+    driver = None
     try:
-        if not browser:
-            browser = await launch(headless=True, args=['--no-sandbox', '--disable-setuid-sandbox'])
+        driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=chrome_options)
+        url = f'https://panel{panelnum}.serv00.com/login/?next=/'
+        print(f'打开 {url}')
+        driver.set_page_load_timeout(60)  # 设置页面加载超时时间
+        driver.get(url)
+        print(f'获取输入框')
+        username_input = driver.find_element(By.ID, 'id_username')
+        password_input = driver.find_element(By.ID, 'id_password')
+        
+        print(f'输入账号密码')
+        username_input.clear()
+        username_input.send_keys(username)
+        password_input.send_keys(password)
+        print(f'登录')
+        login_button = driver.find_element(By.ID, 'submit')
+        login_button.click()
 
-        page = await browser.newPage()
-        url = f'https://panel{panelnum}/login/?next=/'
-        await page.goto(url)
+        print(f'等待页面加载')
+        # 等待页面加载
+        time.sleep(3000)
 
-        username_input = await page.querySelector('#id_username')
-        if username_input:
-            await page.evaluate('''(input) => input.value = ""''', username_input)
-
-        await page.type('#id_username', username)
-        await page.type('#id_password', password)
-
-        login_button = await page.querySelector('#submit')
-        if login_button:
-            await login_button.click()
-        else:
-            raise Exception('无法找到登录按钮')
-
-        await page.waitForNavigation()
-
-        is_logged_in = await page.evaluate('''() => {
-            const logoutButton = document.querySelector('a[href="/logout/"]');
-            return logoutButton !== null;
-        }''')
-
+        # 检查是否登录成功
+        is_logged_in = len(driver.find_elements(By.CSS_SELECTOR, 'a[href="/logout/"]')) > 0
+        print(f'登录 {is_logged_in}')
         return is_logged_in
 
     except Exception as e:
@@ -69,18 +69,12 @@ async def login(username, password, panelnum):
         return False
 
     finally:
-        if page:
-            await page.close()
-# 显式的浏览器关闭函数
-async def shutdown_browser():
-    global browser
-    if browser:
-        await browser.close()
-        browser = None
+        if driver:
+            driver.quit()
 
-async def main():
+def main():
     global message
-    accounts = os.environ["serv00_AUTH"]
+    accounts = os.environ.get("serv00_AUTH")
     if accounts:
         accounts = json.loads(accounts)
 
@@ -90,7 +84,7 @@ async def main():
         panelnum = account['panelnum']
 
         serviceName = 'ct8' if 'ct8' in panelnum else 'serv00'
-        is_logged_in = await login(username, password, panelnum)
+        is_logged_in = login(username, password, panelnum)
 
         now_beijing = format_to_iso(datetime.utcnow() + timedelta(hours=8))
         if is_logged_in:
@@ -101,13 +95,11 @@ async def main():
             print(f"{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。")
 
         delay = random.randint(1000, 8000)
-        await delay_time(delay)
-        
+        time.sleep(delay)
+
     message += f"🔚脚本结束，如有异常点击下方按钮👇"
-    send("serv00 保号",message)
+    send("serv00 保号", message)
     print(f'所有{serviceName}账号登录完成！')
-    # 退出时关闭浏览器
-    await shutdown_browser()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
