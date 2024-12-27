@@ -5,106 +5,63 @@ serv00 保号
 [Script]
 cron "0 0 10 ? * MON/14" script-path=serv00_login.py,tag=serv00 保号
 """
-
-import json
-import time
-from datetime import datetime, timedelta
-import random
 import os
-import logging
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+import paramiko
+import json
 from notify import send
-# 设置日志级别
-logging.basicConfig(level=logging.DEBUG)
 
 
-# 配置Chrome选项
-chrome_options = Options()
-chrome_options.binary_location = "/usr/bin/chromium"  # 确保路径正确
-chrome_options.headless = False
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--disable-dev-shm-usage')
-chrome_options.add_argument(
-    "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-)
-
-# 消息
-message = ""
-
-def format_to_iso(date):
-    return date.strftime('%Y-%m-%d %H:%M:%S')
-
-def login(username, password, panelnum):
-    serviceName = 'ct8' if 'ct8' in panelnum else 'serv00'
-    driver = None
+def ssh_connect(host, port, username, password, command):
     try:
-        driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=chrome_options)
-        url = f'https://panel{panelnum}.serv00.com/login/?next=/'
-        print(f'打开 {url}')
-        driver.set_page_load_timeout(60)  # 设置页面加载超时时间
-        driver.get(url)
-        print(f'获取输入框')
-        username_input = driver.find_element(By.ID, 'id_username')
-        password_input = driver.find_element(By.ID, 'id_password')
-        
-        print(f'输入账号密码')
-        username_input.clear()
-        username_input.send_keys(username)
-        password_input.send_keys(password)
-        print(f'登录')
-        login_button = driver.find_element(By.ID, 'submit')
-        login_button.click()
+        # 创建SSH客户端
+        client = paramiko.SSHClient()
+        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        client.connect(hostname=host, port=port, username=username, password=password)
+        print(f"成功连接到 {host}:{port}")
 
-        print(f'等待页面加载')
-        # 等待页面加载
-        time.sleep(3)
+        # 确保传递的是字符串类型
+        if isinstance(command, list):
+            command = "\n".join(command)
 
-        # 检查是否登录成功
-        is_logged_in = len(driver.find_elements(By.CSS_SELECTOR, 'a[href="/logout/"]')) > 0
-        print(f'登录 {is_logged_in}')
-        return is_logged_in
+        stdin, stdout, stderr = client.exec_command(command)
+        output = stdout.read().decode()
+        error = stderr.read().decode()
+
+        if output:
+            msg = f"连接{host}服务器成功，命令输出：{output}"
+
+        if error:
+            msg = f"连接{host}服务器成功，命令错误：{error}"
+
+        print(msg)
+        return msg
 
     except Exception as e:
-        print(f'{serviceName}账号 {username} 登录时出现错误: {e}')
-        return False
-
+        msg = f"连接{host}服务器失败：{e}"
+        print(msg)
+        return msg
     finally:
-        if driver:
-            driver.quit()
+        client.close()
+        print(f"{host}连接已关闭")
 
-def main():
-    global message
-    accounts = os.environ.get("serv00_AUTH")
+
+
+if __name__ == "__main__":
+    accounts = os.environ["serv00_AUTH"]
     if accounts:
         accounts = json.loads(accounts)
 
+    msgs = "Serv00保号\n"
     for account in accounts:
-        username = account['username']
-        password = account['password']
-        panelnum = account['panelnum']
-
-        serviceName = 'ct8' if 'ct8' in panelnum else 'serv00'
-        is_logged_in = login(username, password, panelnum)
-
-        now_beijing = format_to_iso(datetime.utcnow() + timedelta(hours=8))
-        if is_logged_in:
-            message += f"✅*{serviceName}*账号 *{username}* 于北京时间 {now_beijing}登录面板成功！\n\n"
-            print(f"{serviceName}账号 {username} 于北京时间 {now_beijing}登录面板成功！")
-        else:
-            message += f"❌*{serviceName}*账号 *{username}* 于北京时间 {now_beijing}登录失败\n\n❗请检查*{username}*账号和密码是否正确。\n\n"
-            print(f"{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。")
-
-        delay = random.randint(3, 8)
-        time.sleep(delay)
-
-    message += f"🔚脚本结束，如有异常点击下方按钮👇"
-    send("serv00 保号", message)
-    print(f'所有{serviceName}账号登录完成！')
-
-if __name__ == '__main__':
-    main()
+        username = account['username']  # SSH用户名
+        password = account['password']  # SSH密码
+        server_host = account['server_host']  # 服务器IP或域名
+        server_port = account.get('server_port',22)  # SSH端口号,默认都为22
+        command_to_execute = account.get(
+            'command_to_execute', 'ls -la')  # 需执行的命令，默认都为ls -la
+        command_to_execute = command_to_execute.split("\n")
+        # 遍历所有的服务器配置
+        msg = ssh_connect(server_host, server_port,
+                          username, password, command_to_execute)
+        msgs += msg + "\n"
+    send("Serv00保号信息", msgs)
