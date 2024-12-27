@@ -58,7 +58,7 @@ if __name__ == "__main__":
         server_host = account['server_host']  # 服务器IP或域名
         server_port = account.get('server_port',22)  # SSH端口号,默认都为22
         command_to_execute = account.get(
-            'command_to_execute', 'ls -la')  # 需执行的命令，默认都为ls -la
+            'command_to_execute', f'/home/{username}/.npm-global/bin/pm2 list')  # 需执行的命令，默认都为ls -la
         command_to_execute = command_to_execute.split("\n")
         # 遍历所有的服务器配置
         msg = ssh_connect(server_host, server_port,
