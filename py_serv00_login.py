@@ -11,15 +11,20 @@ import time
 from datetime import datetime, timedelta
 import random
 import os
+import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from notify import send
+# 设置日志级别
+logging.basicConfig(level=logging.DEBUG)
+
 
 # 配置Chrome选项
 chrome_options = Options()
+chrome_options.binary_location = "/usr/bin/chromium"  # 确保路径正确
 chrome_options.headless = False
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
@@ -57,7 +62,7 @@ def login(username, password, panelnum):
 
         print(f'等待页面加载')
         # 等待页面加载
-        time.sleep(3000)
+        time.sleep(3)
 
         # 检查是否登录成功
         is_logged_in = len(driver.find_elements(By.CSS_SELECTOR, 'a[href="/logout/"]')) > 0
@@ -94,7 +99,7 @@ def main():
             message += f"❌*{serviceName}*账号 *{username}* 于北京时间 {now_beijing}登录失败\n\n❗请检查*{username}*账号和密码是否正确。\n\n"
             print(f"{serviceName}账号 {username} 登录失败，请检查{serviceName}账号和密码是否正确。")
 
-        delay = random.randint(1000, 8000)
+        delay = random.randint(3, 8)
         time.sleep(delay)
 
     message += f"🔚脚本结束，如有异常点击下方按钮👇"
