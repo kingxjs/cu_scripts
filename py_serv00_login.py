@@ -54,7 +54,6 @@ def ssh_connect(host, port, username, password, command):
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         client.connect(hostname=host, port=port, username=username, password=password)
         print(f"成功连接到 {host}:{port}")
-        ispm2 = command and 'pm2 list' in command[-1]
         # 确保传递的是字符串类型
         if isinstance(command, list):
             command = "\n".join(command)
@@ -63,8 +62,9 @@ def ssh_connect(host, port, username, password, command):
         output = stdout.read().decode()
         error = stderr.read().decode()
         msg = f"连接{host}服务器成功"
+        ispm2 = command and 'pm2' in command[-1]
         if output:
-            if ispm2:
+            if ispm2 and 'pm2' in output:
                 msg += f"\n\n命令输出：\n{format_pm2_list(output)}"
             else:
                 msg += f"\n\n命令输出：\n{output}"
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         server_host = account['server_host']  # 服务器IP或域名
         server_port = account.get('server_port',22)  # SSH端口号,默认都为22
         command_to_execute = account.get(
-            'command_to_execute', f'/home/{username}/.npm-global/bin/pm2 list')  # 需执行的命令，默认都为ls -la
+            'command_to_execute', f'cd /home/uoljgesi/domains/npxApp && ./resurrect_pm2.sh')  # 需执行的命令，默认都为ls -la
         command_to_execute = command_to_execute.split("\n")
         # 遍历所有的服务器配置
         msg = ssh_connect(server_host, server_port,
